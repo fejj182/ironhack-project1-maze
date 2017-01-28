@@ -2,11 +2,11 @@
 //
 //1.Start at a random cell
 //
-//2.Mark the current cell as visited, and get a list of its neighbors.
-//	For each neighbor, starting with a randomly selected neighbor:
+//2.Mark the current cell as visited, and get a list of its neighbours.
+//	For each neighbour, starting with a randomly selected neighbour:
 //
-//	If that neighbor hasn't been visited, remove the wall between this cell and
-//	that neighbor, and then recurse with that neighbor as the current cell.
+//	If that neighbour hasn't been visited, remove the wall between this cell and
+//	that neighbour, and then recurse with that neighbour as the current cell.
 
 function Maze(x,y) {
 	this.columns = x;
@@ -38,22 +38,39 @@ Maze.prototype.populateCellsArrays = function(){
 
 Maze.prototype.checkNeighbours = function(){
 		var current = this.currentCell;
+		var vis = this.visitedCells;
 		var unvis = this.unvisitedCells;
-	// Loop until all cells have been visited
+	// loop until all cells have been visited
+
 	// while (this.numberVisited < this.totalCells) {
+
+		// create an array of all neighbours
 		var neighbours = [[current[0]-1, current[1]],
 											[current[0], current[1]+1],
 											[current[0]+1, current[1]],
 											[current[0], current[1]-1]];
 		var notChecked = [];
 
+		// if neighbour has not been checked - is in the unvisited cells array -
+		// and inside the game matrix then push to the notChecked array
+
 		for (var k = 0; k < neighbours.length; k++){
-			if (unvis[neighbours[k][0]][neighbours[k][1]]) {
+			if (neighbours[k][0] > -1
+				&& neighbours[k][0] < this.rows
+				&& neighbours[k][1] > -1
+				&& neighbours[k][1] < this.columns
+				&& unvis[neighbours[k][0]][neighbours[k][1]]) {
 				notChecked.push(neighbours[k]);
 			}
 		}
-		console.log(current);
-		console.log(notChecked);
+
+		//if at least one of the neighbours is in the unvisitedCells array, then select one at random
+		if (notChecked.length) {
+			var next = notChecked[Math.floor(Math.random()*notChecked.length)];
+
+			console.log(current);
+			console.log(next);
+		}
 	// }
 }
 
