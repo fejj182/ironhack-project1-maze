@@ -1,0 +1,8 @@
+#maze {
+    border-collapse: collapse;
+}
+
+#maze td {
+    width: 20px;
+    height: 20px;
+}
