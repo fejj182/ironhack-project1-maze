@@ -46,15 +46,15 @@ Maze.prototype.populateCellsArrays = function(){
 }
 
 Maze.prototype.checkNeighbours = function(){
-	var current = this.currentCell;
 	var vis = this.visitedCells;
 	var unvis = this.unvisitedCells;
-
+	var path = this.path;
 
 	// loop until all cells have been visited
 
-	// while (this.numberVisited < this.totalCells) {
-
+	while (this.numberVisited < this.totalCells) {
+		var current = this.currentCell;
+		
 		// create an array of all neighbours
 		// index [0]&[1] representing the position of the neighbours and index [2]&[3] representing the
 		// border between the current cell and the neighbour, the first being from the perspective of the
@@ -93,30 +93,19 @@ Maze.prototype.checkNeighbours = function(){
 			// Mark the neighbor as visited, and set it as the current cell
 			unvis[next[0]][next[1]] = false;
 			this.numberVisited++;
-			currentCell = [next[0], next[1]];
-			this.path.push(currentCell);
+			this.currentCell = [next[0], next[1]];
+			path.push(this.currentCell);
+		}
+			else {
+					this.currentCell = path.pop();
+		}
 
-			console.log(this.path);
-			console.log(this.numberVisited,this.totalCells);
-		}
-		else {
-			console.log("what");
-		}
-	// }
+	}
 }
 
 function createMaze() {
-	var myMaze = new Maze(4,6);
+	var myMaze = new Maze(20,20);
 	myMaze.populateCellsArrays();
 	myMaze.checkNeighbours();
-	myMaze.checkNeighbours();
-	myMaze.checkNeighbours();
-	myMaze.checkNeighbours();
-	myMaze.checkNeighbours();
-	myMaze.checkNeighbours();
-	myMaze.checkNeighbours();
-	myMaze.checkNeighbours();
-	myMaze.checkNeighbours();
+	return myMaze.visitedCells;
 }
-
-createMaze();

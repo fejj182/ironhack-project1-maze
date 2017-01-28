@@ -20,8 +20,6 @@ function newMaze(x, y) {
     unvis[currentCell[0]][currentCell[1]] = false;
     var visited = 1;
 
-		var test=0;
-
     // Loop through all available cell positions
     while (visited < totalCells) {
         // Determine neighboring cells
@@ -43,18 +41,6 @@ function newMaze(x, y) {
 
             // Remove the wall between the current cell and the chosen neighboring cell
 
-						if (test === 0) {
-							console.log(pot);
-
-							var firstCell = JSON.parse(JSON.stringify(currentCell));
-							console.log(firstCell);
-
-							var nextCell = JSON.parse(JSON.stringify(next));
-							console.log(nextCell);
-
-							test = 1;
-						}
-
             cells[currentCell[0]][currentCell[1]][next[2]] = 1;
             cells[next[0]][next[1]][next[3]] = 1;
 
@@ -68,7 +54,8 @@ function newMaze(x, y) {
         else {
             currentCell = path.pop();
         }
+			console.log(path);
     }
-		// console.log(cells);
+		
     return cells;
 }

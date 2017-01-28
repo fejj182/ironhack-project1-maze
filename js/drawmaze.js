@@ -1,5 +1,6 @@
 $(document).ready(function(){
-	var disp = newMaze(6,8);
+	// var disp = newMaze(5,5);
+	var disp = createMaze();
 	for (var i = 0; i < disp.length; i++) {
 			$('#maze > tbody').append("<tr>");
 			for (var j = 0; j < disp[i].length; j++) {
