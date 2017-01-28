@@ -1,5 +1,4 @@
 $(document).ready(function(){
-	// var disp = newMaze(5,5);
 	var disp = createMaze();
 	for (var i = 0; i < disp.length; i++) {
 			$('#maze > tbody').append("<tr>");
@@ -13,4 +12,9 @@ $(document).ready(function(){
 			}
 			$('#maze > tbody').append("</tr>");
 	}
+
+	$("#0-0").css("border-top","none");
+	$("#19-19").css("border-right","none");
+	$("#19-19").html("<i class='fa fa-child' aria-hidden='true'></i>");
+
 })
