@@ -27,39 +27,44 @@ $(document).ready(function(){
 		this.location = [(disp[0].length-1),(disp.length-1)];
 	}
 
+	Player1.prototype.checkForWall = function(direction){
+		var checkSelector = this.location[0] + "-" + (player.location[1]);
+		var border = $("#" + checkSelector).css("border-" + direction);
+		var borderCheck = border.indexOf("2px") == -1;
+
+		return borderCheck;
+	}
+
 	Player1.prototype.movePlayer = function(){
+
+	// move function used in multiple locations within bind function below
+	function move(newLocationCommand) {
+		$("#" + selector).html("");
+		newLocationCommand;
+		//overwrite selector after move
+		selector = player.location[0] + '-' + player.location[1];
+		$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+	}
 
 		$(document).bind('keyup', function(e){
 			var selector = player.location[0] + "-" + player.location[1];
-				if(e.which==37) {
+				if(e.which==37 && player.checkForWall("left")) {
 					//left
-					$("#" + selector).html("");
-					player.location[1]--;
-					selector = player.location[0] + '-' + player.location[1];
-					$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+					move(player.location[1]--);
 				}
-				if(e.which==38) {
+				if(e.which==38 && player.checkForWall("top")) {
 					//up
-					$("#" + selector).html("");
-					player.location[0]--;
-					selector = player.location[0] + '-' + player.location[1]
-					$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+					move(player.location[0]--);
 				}
-				if(e.which==39) {
+				if(e.which==39 && player.checkForWall("right")) {
 					//right
-					$("#" + selector).html("");
-					player.location[1]++;
-					selector = player.location[0] + '-' + player.location[1]
-					$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+					move(player.location[1]++);
 				}
-				if(e.which==40) {
+				if(e.which==40 && player.checkForWall("bottom")) {
 					//down
-					$("#" + selector).html("");
-					player.location[0]++;
-					selector = player.location[0] + '-' + player.location[1]
-					$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+					move(player.location[0]++);
 				}
-		});
+		})
 	}
 
 	var player = new Player1();
