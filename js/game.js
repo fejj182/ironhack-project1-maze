@@ -50,6 +50,15 @@ $(document).ready(function(){
 		this.weapon = weapon;
 	}
 
+	Character.prototype.attack = function(){
+	    return this.weapon["attackPower"];
+	};
+
+	Character.prototype.receiveDamage = function(attacker){
+	  this.health -= attacker.attack();
+	  return this.health;
+	};
+
 	///////////////////
 	// Player Prototype
 	///////////////////
@@ -61,6 +70,8 @@ $(document).ready(function(){
 		this.health = health;
 		this.weapon = weapon;
 	}
+
+	Player1.prototype = Object.create(Character.prototype);
 
 	Player1.prototype.checkForWall = function(direction){
 		var checkSelector = this.location[0] + "-" + (this.location[1]);
@@ -110,12 +121,12 @@ $(document).ready(function(){
 		})
 	}
 
-		var player = new Player1("Jeff",50,weapons[0]);
+		var player = new Player1("the Wee Man",50,weapons[0]);
 		console.log(player);
 		player.movePlayer();
 
 		/////////////////
-		//Enemy Prototype
+		// Enemy Prototype
 		/////////////////
 
 		function Enemy(name,health,weapon) {
@@ -125,7 +136,31 @@ $(document).ready(function(){
 			this.weapon = weapon;
 		}
 
+		Enemy.prototype = Object.create(Character.prototype);
+
 		var goblin = new Enemy("Goblin",20,weapons[1]);
+		console.log(goblin);
+
+		//////////////////
+		// Attack/Receive Damage
+		//////////////////
+
+		function playerAttack(enemy){
+			player.attack();
+			enemy.receiveDamage(player);
+			console.log(enemy.name + " has received " + player.weapon["attackPower"] + " points of damage.");
+		}
+
+		function enemyAttack(enemy){
+			enemy.attack();
+			player.receiveDamage(enemy);
+			console.log(player.name + " has received " + enemy.weapon["attackPower"] + " points of damage.");
+		}
+
+		playerAttack(goblin);
+		enemyAttack(goblin);
+
+		console.log(player);
 		console.log(goblin);
 
 
