@@ -6,4 +6,14 @@ describe("Test Maze Generator", function () {
 
   });
 
+	it("Checks player location", function() {
+
+    expect(createPlayer().location).toEqual([19,19]);
+
+		var player = createPlayer();
+
+		expect(player.name).toEqual("Jeff");
+
+  });
+
 });

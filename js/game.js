@@ -55,7 +55,7 @@ $(document).ready(function(){
 				if(e.which==40) {
 					//down
 					$("#" + selector).html("");
-					player.location[0];
+					player.location[0]++;
 					selector = player.location[0] + '-' + player.location[1]
 					$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
 				}
