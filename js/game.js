@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
-	//draw maze
+	// Draw maze
+
 	var myMaze = createMaze();
 	var disp = myMaze.visitedCells;
 	for (var i = 0; i < disp.length; i++) {
@@ -20,11 +21,28 @@ $(document).ready(function(){
 	$("#19-19").css("border-right","none");
 	$("#19-19").html("<i class='fa fa-child' aria-hidden='true'></i>");
 
-	//Player functions
+	///////////////////
+	// Items and weapons
+	///////////////////
+
+	var weapons = [
+		{	type: "fists",
+			attackPower: 2
+		},
+		{	type: "Pitchfork",
+			attackPower: 4
+		}
+	];
+
+	///////////////////
+	// Player Prototype
+	///////////////////
 
 	function Player1() {
 		this.name = "Jeff";
 		this.location = [(disp[0].length-1),(disp.length-1)];
+		this.health = 50;
+		this.weapon = weapons[0];
 	}
 
 	Player1.prototype.checkForWall = function(direction){
@@ -69,5 +87,20 @@ $(document).ready(function(){
 
 	var player = new Player1();
 	player.movePlayer();
+
+	/////////////////
+	//Enemy Prototype
+	/////////////////
+
+	function Enemy(name,health,weaponNumber) {
+		this.name = name;
+		this.health = health;
+		this.weapon = weapons[weaponNumber];
+	}
+
+	var goblin = new Enemy("Goblin",20,1);
+
+	console.log(player);
+	console.log(goblin);
 
 })
