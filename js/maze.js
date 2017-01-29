@@ -54,7 +54,7 @@ Maze.prototype.checkNeighbours = function(){
 
 	while (this.numberVisited < this.totalCells) {
 		var current = this.currentCell;
-		
+
 		// create an array of all neighbours
 		// index [0]&[1] representing the position of the neighbours and index [2]&[3] representing the
 		// border between the current cell and the neighbour, the first being from the perspective of the
