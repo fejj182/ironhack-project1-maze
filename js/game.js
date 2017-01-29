@@ -1,8 +1,8 @@
 $(document).ready(function(){
 
 	//draw maze
-
-	var disp = createMaze();
+	var myMaze = createMaze();
+	var disp = myMaze.visitedCells;
 	for (var i = 0; i < disp.length; i++) {
 			$('#maze > tbody').append("<tr>");
 			for (var j = 0; j < disp[i].length; j++) {
