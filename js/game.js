@@ -35,14 +35,25 @@ $(document).ready(function(){
 	];
 
 	///////////////////
+	// Character prototype
+	///////////////////
+
+	function Character(name,health,weapon) {
+		this.name = name;
+		this.health = health;
+		this.weapon = weapon;
+	}
+
+	///////////////////
 	// Player Prototype
 	///////////////////
 
-	function Player1() {
-		this.name = "Jeff";
+	function Player1(name,health,weapon) {
+		Character.call(this,name,health,weapon);
+		this.name = name;
 		this.location = [(disp[0].length-1),(disp.length-1)];
-		this.health = 50;
-		this.weapon = weapons[0];
+		this.health = health;
+		this.weapon = weapon;
 	}
 
 	Player1.prototype.checkForWall = function(direction){
@@ -85,22 +96,23 @@ $(document).ready(function(){
 		})
 	}
 
-	var player = new Player1();
+	var player = new Player1("Jeff",50,weapons[0]);
+	console.log(player);
 	player.movePlayer();
 
 	/////////////////
 	//Enemy Prototype
 	/////////////////
 
-	function Enemy(name,health,weaponNumber) {
+	function Enemy(name,health,weapon) {
+		Character.call(this,name,health,weapon);
 		this.name = name;
 		this.health = health;
-		this.weapon = weapons[weaponNumber];
+		this.weapon = weapon;
 	}
 
-	var goblin = new Enemy("Goblin",20,1);
-
-	console.log(player);
+	var goblin = new Enemy("Goblin",20,weapons[1]);
 	console.log(goblin);
+
 
 })
