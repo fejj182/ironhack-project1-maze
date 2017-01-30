@@ -69,6 +69,7 @@ $(document).ready(function(){
 		this.location = [(disp[0].length-1),(disp.length-1)];
 		this.health = health;
 		this.weapon = weapon;
+		this.xpId = "your-xp"
 	}
 
 	Player1.prototype = Object.create(Character.prototype);
@@ -122,6 +123,7 @@ $(document).ready(function(){
 	}
 
 		var player = new Player1("the Wee Man",50,weapons[0]);
+		$("#your-xp").html(player.health + "XP");
 		console.log(player);
 		player.movePlayer();
 
@@ -134,11 +136,13 @@ $(document).ready(function(){
 			this.name = name;
 			this.health = health;
 			this.weapon = weapon;
+			this.xpId = "enemy-xp";
 		}
 
 		Enemy.prototype = Object.create(Character.prototype);
 
 		var goblin = new Enemy("Goblin",5,weapons[1]);
+
 		console.log(goblin);
 
 		///add Crow and Ogre
@@ -150,11 +154,13 @@ $(document).ready(function(){
 		function playerAttack(enemy){
 			player.attack();
 			enemy.receiveDamage(player);
+			$("#" + enemy.xpId).html(enemy.health + "XP");
 		}
 
 		function enemyAttack(enemy){
 			enemy.attack();
 			player.receiveDamage(enemy);
+			$("#" + player.xpId).html(player.health + "XP");
 		}
 
 		//////////////////////
@@ -195,6 +201,7 @@ $(document).ready(function(){
 				//sequence which takes place when enemy is killed in battle, i.e. to restart the game
 				$("#attack-button").off("click");
 		    enemy.health = 5;
+				$(".battle").toggleClass("hide");
 				player.movePlayer();
 		    console.log("You killed " + enemy.name + ", nice.");
 				console.log(player.name + " has " + player.health + "XP left.");
@@ -204,12 +211,13 @@ $(document).ready(function(){
 
 
 		function randomBattleMode(enemy) {
-			var battleTime = Math.floor(((Math.random() * 5) + 5)*1000);
+			var battleTime = Math.floor(((Math.random() * 3) + 3)*1000);
 			console.log(battleTime);
 			setTimeout(function(){
 				if(player.health > 0) {
+					$("#enemy-xp").html(enemy.health + "XP");
 					console.log("Battle!");
-					$("#goblin, #attack-button, #dodge-button, h1").toggleClass("hide");
+					$(".battle").toggleClass("hide");
 					$(document).off("keyup");
 					$("#attack-button").on("click",function(){
 						battle(goblin);
