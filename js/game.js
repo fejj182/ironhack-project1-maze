@@ -225,6 +225,11 @@ $(document).ready(function(){
 					$(".battle").toggleClass("hide");
 					$(document).off("keyup");
 					$("#attack-button").on("click",function(){
+						var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""));
+						var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
+						if (whiteValue > redValue && whiteValue < redValue + 20) {
+							$("#attack-bar-blue").append("<p style='margin-left: 75px; width: 200px'>Bad Mutha POWER BOOST!!!</p>");
+						};
 						battle(goblin);
 					});
 				}
@@ -238,6 +243,10 @@ $(document).ready(function(){
 		//starts the game
 
 		randomBattleMode(goblin);
+
+		///////////////////
+		// Attack and dodge functions
+		///////////////////
 
 
 })

@@ -87,7 +87,7 @@ span {
 	height: 5px;
 	background-color: white;
 	border: none;
-	animation: upDown 0.25s linear infinite;
+	animation: upDown 2.5s linear infinite;
 }
 
 @keyframes upDown {
