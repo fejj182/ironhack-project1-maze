@@ -201,6 +201,9 @@ $(document).ready(function(){
 				if(player.health > 0) {
 					randomBattleMode(enemy);
 				}
+				else {
+					$(document).off("keyup");
+				}
 			},battleTime);
 		}
 

@@ -1,3 +1,7 @@
+.row {
+	margin: 50px;
+}
+
 #maze {
     border-collapse: collapse;
 }
