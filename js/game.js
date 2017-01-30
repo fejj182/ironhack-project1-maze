@@ -165,28 +165,34 @@ $(document).ready(function(){
 		  var turn = [0,1];
 		  if (turn[0] === 0){
 		    playerAttack(goblin);
+				console.log(goblin.health);
 				turn.shift();
 				turn.push(0);
 		  }
 		  if (turn[0] === 1){
 				enemyAttack(goblin);
+				console.log(player.health);
 				turn.shift();
 				turn.push(1);
 		  }
 		};
 
 		var battle = function(enemy) {
-		  while (player.health > 0 && enemy.health > 0) {
-		    attackInTurns();
-		  }
+
+			if (player.health > 0 && enemy.health > 0){
+				attackInTurns();
+			}
+
 		  if (player.health < 0){
 				player.health = 0;
-		    console.log(player.name + " has died in act of combat.");
+		    console.log(player.name + " has died in act of combat. Game Over.");
 		  }
 		  else if (enemy.health < 0){
+				$("#attack-button").off("click");
 		    enemy.health = 5;
 		    console.log("You killed " + enemy.name + ", nice.");
 				console.log(player.name + " has " + player.health + "XP left.");
+				randomBattleMode(enemy);
 		  }
 		};
 
@@ -194,14 +200,17 @@ $(document).ready(function(){
 
 
 		function randomBattleMode(enemy) {
-			var battleTime = Math.floor(((Math.random() * 3) + 3)*1000);
+			var battleTime = Math.floor(((Math.random() * 5) + 5)*1000);
 			console.log(battleTime);
 			setTimeout(function(){
-				battle(enemy);
 				if(player.health > 0) {
-					randomBattleMode(enemy);
+					console.log("Battle!");
+					$("#attack-button").on("click",function(){
+						battle(goblin);
+					});
 				}
 				else {
+					$("#attack-button").off("click");
 					$(document).off("keyup");
 				}
 			},battleTime);

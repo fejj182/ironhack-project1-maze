@@ -11,3 +11,12 @@
     height: 20px;
 		text-align: center;
 }
+
+button {
+	margin-top: 175px;
+}
+
+.btn {
+	font-size: 32px;
+	padding: 15px;
+}
