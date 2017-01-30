@@ -1,5 +1,5 @@
 button {
-	margin-top: 275px;
+	margin-top: 20px;
 }
 
 p {
@@ -29,6 +29,17 @@ span {
 	text-align: center;
 }
 
+.bar {
+	border: 2px solid black;
+}
+
+.health-bar {
+	width: 250px;
+	height: 40px;
+	margin-top: 20px;
+	margin-left: 20px;
+}
+
 #maze {
 	margin-top: 75px;
   border-collapse: collapse;
@@ -46,17 +57,49 @@ span {
 	margin: 0 auto;
 }
 
-.health-bar {
-	width: 250px;
-	height: 40px;
-	margin-top: 20px;
-	margin-left: 20px;
-}
-
 #player-health-bar {
 	background-color: blue;
 }
 
 #enemy-health-bar {
 	background-color: red;
+}
+
+#attack-bar-blue {
+	position: relative;
+	width: 50px;
+	height: 250px;
+	background-color: blue;
+}
+
+#attack-bar-red {
+	position: absolute;
+	top: 20%;
+	width: 48px;
+	height: 20px;
+	background-color: red;
+}
+
+#attack-bar-white {
+	position: absolute;
+	top: 0;
+	width: 50px;
+	height: 5px;
+	background-color: white;
+	border: none;
+	animation: upDown 0.25s linear infinite;
+}
+
+@keyframes upDown {
+	0% {
+		top: 0;
+	}
+
+	50% {
+		top: 100%;
+	}
+
+	100% {
+		top: 0;
+	}
 }
