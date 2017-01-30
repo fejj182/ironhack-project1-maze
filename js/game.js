@@ -138,8 +138,10 @@ $(document).ready(function(){
 
 		Enemy.prototype = Object.create(Character.prototype);
 
-		var goblin = new Enemy("Goblin",20,weapons[1]);
+		var goblin = new Enemy("Goblin",5,weapons[1]);
 		console.log(goblin);
+
+		///add Crow and Ogre
 
 		//////////////////
 		// Attack/Receive Damage
@@ -160,8 +162,40 @@ $(document).ready(function(){
 		playerAttack(goblin);
 		enemyAttack(goblin);
 
-		console.log(player);
-		console.log(goblin);
+		var attack = function() {
+		  var turn = [0,1];
+		  if (turn[0] === 0){
+		    playerAttack(goblin);
+				turn.shift();
+				turn.push(0);
+		  }
+		  if (turn[0] === 1){
+				enemyAttack(goblin);
+				turn.shift();
+				turn.push(1);
+		  }
+		};
 
+		function showStats(enemy){
+		  console.log("Player has " + player.health + " HP.");
+		  console.log(enemy.name + " has " + enemy.health + " HP.");
+		  console.log("You killed " + enemy.name + ", nice.");
+		}
 
+		var battle = function(enemy) {
+		  while ((player.health > 0) && (enemy.health > 0)) {
+		    attack();
+		  }
+		  if (player.health < 0){
+				player.health = 0;
+		    console.log(player.name + " has died in act of combat.");
+		  }
+		  else if (enemy.health < 0){
+		    enemy.health = 0;
+		    console.log(enemy.name + " has died in combat.");
+		  }
+			showStats(enemy);
+		};
+
+		battle(goblin);
 })

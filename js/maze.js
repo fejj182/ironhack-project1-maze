@@ -104,7 +104,7 @@ Maze.prototype.checkNeighbours = function(){
 }
 
 function createMaze() {
-	var myMaze = new Maze(20,20);
+	var myMaze = new Maze(5,5);
 	myMaze.populateCellsArrays();
 	myMaze.checkNeighbours();
 	return myMaze;
