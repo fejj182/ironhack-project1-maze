@@ -41,6 +41,22 @@ span {
 }
 
 #goblin {
-	width: 100%;
+	width: 90%;
 	height: auto;
+	margin: 0 auto;
+}
+
+.health-bar {
+	width: 250px;
+	height: 40px;
+	margin-top: 20px;
+	margin-left: 20px;
+}
+
+#player-health-bar {
+	background-color: blue;
+}
+
+#enemy-health-bar {
+	background-color: red;
 }

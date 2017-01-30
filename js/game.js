@@ -69,7 +69,7 @@ $(document).ready(function(){
 		this.location = [(disp[0].length-1),(disp.length-1)];
 		this.health = health;
 		this.weapon = weapon;
-		this.xpId = "your-xp"
+		this.xpId = "your-xp";
 	}
 
 	Player1.prototype = Object.create(Character.prototype);
@@ -155,12 +155,14 @@ $(document).ready(function(){
 			player.attack();
 			enemy.receiveDamage(player);
 			$("#" + enemy.xpId).html(enemy.health + "XP");
+			$("#enemy-health-bar").css("width",enemy.health * 50 + "px");
 		}
 
 		function enemyAttack(enemy){
 			enemy.attack();
 			player.receiveDamage(enemy);
 			$("#" + player.xpId).html(player.health + "XP");
+			$("#player-health-bar").css("width",player.health * 5 + "px");
 		}
 
 		//////////////////////
@@ -192,15 +194,18 @@ $(document).ready(function(){
 				attackInTurns();
 			}
 
-		  if (player.health < 0){
+		  if (player.health <= 0){
 				//if player dies...game over;
 				player.health = 0;
+				$("#" + player.xpId).html(player.health + "XP.");
+				$("#player-health-bar").append("<p style='width: 200px; font-size: 40px;'>You died.</p>");
 		    console.log(player.name + " has died in act of combat. Game Over.");
 		  }
-		  else if (enemy.health < 0){
+		  else if (enemy.health <= 0){
 				//sequence which takes place when enemy is killed in battle, i.e. to restart the game
 				$("#attack-button").off("click");
 		    enemy.health = 5;
+				$("#enemy-health-bar").css("width",enemy.health * 50 + "px");
 				$(".battle").toggleClass("hide");
 				player.movePlayer();
 		    console.log("You killed " + enemy.name + ", nice.");
@@ -211,7 +216,7 @@ $(document).ready(function(){
 
 
 		function randomBattleMode(enemy) {
-			var battleTime = Math.floor(((Math.random() * 3) + 3)*1000);
+			var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
 			console.log(battleTime);
 			setTimeout(function(){
 				if(player.health > 0) {

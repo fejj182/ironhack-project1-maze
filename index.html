@@ -9,20 +9,24 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<div class="col-xs-2 col-xs-offset-1">
+		<div class="col-xs-2 col-xs-offset-1 center">
 			<table id="maze">
 				<tbody></tbody>
 			</table>
 			<p>
 				<span>Health:<span id="your-xp"></span></span>
 			</p>
+			<div class="health-bar" id="player-health-bar">
+			</div>
 		</div>
-		<div class="col-xs-3 col-xs-offset-1">
+		<div class="col-xs-3 col-xs-offset-1 center">
 			<div class="row">
 				<img src="img/goblin.png" alt="goblin" class="battle hide" id="goblin">
 				<p class="center">
 					<span class="battle hide">Enemy XP:<span id="enemy-xp"></span></span>
 				</p>
+				<div class="health-bar battle hide" id="enemy-health-bar">
+				</div>
 			</div>
 		</div>
 		<div class="col-xs-3 col-xs-offset-1">
