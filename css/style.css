@@ -1,22 +1,36 @@
+button {
+	margin-top: 275px;
+}
+
 .row {
 	margin: 50px;
-}
-
-#maze {
-    border-collapse: collapse;
-}
-
-#maze td {
-    width: 20px;
-    height: 20px;
-		text-align: center;
-}
-
-button {
-	margin-top: 175px;
 }
 
 .btn {
 	font-size: 32px;
 	padding: 15px;
+}
+
+.hide {
+	display: none;
+}
+
+.center {
+	text-align: center;
+}
+
+#maze {
+	margin-top: 75px;
+  border-collapse: collapse;
+}
+
+#maze td {
+  width: 20px;
+  height: 20px;
+	text-align: center;
+}
+
+#goblin {
+	width: 100%;
+	height: auto;
 }

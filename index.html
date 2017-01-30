@@ -8,20 +8,24 @@
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<div class="container">
-		<div class="row">
+	<div class="container-fluid">
+		<div class="col-xs-2 col-xs-offset-1">
+			<table id="maze">
+				<tbody></tbody>
+			</table>
+		</div>
+		<div class="col-xs-3 col-xs-offset-1">
+			<div class="row">
+				<img src="img/goblin.png" alt="goblin" class="hide" id="goblin">
+			</div>
+		</div>
+		<div class="col-xs-3 col-xs-offset-1">
+			<h1 class="center hide">You've been attacked! Prepare for BATTLE!</h1>
 			<div class="col-xs-6">
-				<table id="maze">
-					<tbody></tbody>
-				</table>
+				<button class="btn hide" id="attack-button">Attack</button>
 			</div>
 			<div class="col-xs-6">
-				<div class="col-xs-6">
-					<button class="btn" id="attack-button">Attack</button>
-				</div>
-				<div class="col-xs-6">
-					<button class="btn" id="dodge-button">Dodge</button>
-				</div>
+				<button class="btn hide" id="dodge-button">Dodge</button>
 			</div>
 		</div>
 	</div>

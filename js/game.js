@@ -161,6 +161,8 @@ $(document).ready(function(){
 		// Random battle generator
 		//////////////////////
 
+		//attack sequence which runs on 'Attack' click
+
 		var attackInTurns = function() {
 		  var turn = [0,1];
 		  if (turn[0] === 0){
@@ -177,26 +179,28 @@ $(document).ready(function(){
 		  }
 		};
 
-		var battle = function(enemy) {
+		//battle sequence which runs until someone dies
 
+		var battle = function(enemy) {
 			if (player.health > 0 && enemy.health > 0){
 				attackInTurns();
 			}
 
 		  if (player.health < 0){
+				//if player dies...game over;
 				player.health = 0;
 		    console.log(player.name + " has died in act of combat. Game Over.");
 		  }
 		  else if (enemy.health < 0){
+				//sequence which takes place when enemy is killed in battle, i.e. to restart the game
 				$("#attack-button").off("click");
 		    enemy.health = 5;
+				player.movePlayer();
 		    console.log("You killed " + enemy.name + ", nice.");
 				console.log(player.name + " has " + player.health + "XP left.");
 				randomBattleMode(enemy);
 		  }
 		};
-
-		//between 3 and 6 seconds
 
 
 		function randomBattleMode(enemy) {
@@ -205,6 +209,8 @@ $(document).ready(function(){
 			setTimeout(function(){
 				if(player.health > 0) {
 					console.log("Battle!");
+					$("#goblin, #attack-button, #dodge-button, h1").toggleClass("hide");
+					$(document).off("keyup");
 					$("#attack-button").on("click",function(){
 						battle(goblin);
 					});
@@ -215,6 +221,8 @@ $(document).ready(function(){
 				}
 			},battleTime);
 		}
+
+		//starts the game
 
 		randomBattleMode(goblin);
 
