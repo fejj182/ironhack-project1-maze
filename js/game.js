@@ -150,19 +150,18 @@ $(document).ready(function(){
 		function playerAttack(enemy){
 			player.attack();
 			enemy.receiveDamage(player);
-			console.log(enemy.name + " has received " + player.weapon["attackPower"] + " points of damage.");
 		}
 
 		function enemyAttack(enemy){
 			enemy.attack();
 			player.receiveDamage(enemy);
-			console.log(player.name + " has received " + enemy.weapon["attackPower"] + " points of damage.");
 		}
 
-		playerAttack(goblin);
-		enemyAttack(goblin);
+		//////////////////////
+		// Random battle generator
+		//////////////////////
 
-		var attack = function() {
+		var attackInTurns = function() {
 		  var turn = [0,1];
 		  if (turn[0] === 0){
 		    playerAttack(goblin);
@@ -176,26 +175,36 @@ $(document).ready(function(){
 		  }
 		};
 
-		function showStats(enemy){
-		  console.log("Player has " + player.health + " HP.");
-		  console.log(enemy.name + " has " + enemy.health + " HP.");
-		  console.log("You killed " + enemy.name + ", nice.");
-		}
-
 		var battle = function(enemy) {
-		  while ((player.health > 0) && (enemy.health > 0)) {
-		    attack();
+		  while (player.health > 0 && enemy.health > 0) {
+		    attackInTurns();
 		  }
 		  if (player.health < 0){
 				player.health = 0;
 		    console.log(player.name + " has died in act of combat.");
 		  }
 		  else if (enemy.health < 0){
-		    enemy.health = 0;
-		    console.log(enemy.name + " has died in combat.");
+		    enemy.health = 5;
+		    console.log("You killed " + enemy.name + ", nice.");
+				console.log(player.name + " has " + player.health + "XP left.");
 		  }
-			showStats(enemy);
 		};
 
-		battle(goblin);
+		//between 3 and 6 seconds
+
+
+		function randomBattleMode(enemy) {
+			var battleTime = Math.floor(((Math.random() * 3) + 3)*1000);
+			console.log(battleTime);
+			setTimeout(function(){
+				battle(enemy);
+				if(player.health > 0) {
+					randomBattleMode(enemy);
+				}
+			},battleTime);
+		}
+
+		randomBattleMode(goblin);
+
+
 })
