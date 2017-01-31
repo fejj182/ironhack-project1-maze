@@ -203,15 +203,15 @@ $(document).ready(function(){
 		  }
 		  else if (enemy.health <= 0){
 				//sequence which takes place when enemy is killed in battle, i.e. to restart the game
-				$("#attack-button").off("click");
-		    enemy.health = 5;
-				$("#enemy-health-bar").css("width",enemy.health * 50 + "px");
-				$("#attack-bar-white").css("animation","none");
-				$(".battle").toggleClass("hide");
-				player.movePlayer();
+				$("#attack-button").off("click");	//turn off attack button
+		    enemy.health = 5; //reset enemy health
+				$("#enemy-health-bar").css("width",enemy.health * 50 + "px"); //reset enemy health bar
+				$("#attack-bar-white").css("animation","none"); //stop attack bar animation
+				$(".battle").toggleClass("hide"); //hide all battle specific elements
+				player.movePlayer();	//reinitialise controls for wee man
 		    console.log("You killed " + enemy.name + ", nice.");
 				console.log(player.name + " has " + player.health + "XP left.");
-				randomBattleMode(enemy);
+				randomBattleMode(enemy); //restart random encounters
 		  }
 		};
 
