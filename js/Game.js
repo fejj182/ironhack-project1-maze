@@ -13,21 +13,23 @@ function Game(){
 	};
 }
 
-Game.prototype.drawMaze = function(myMaze) {
-	var disp, selector;
 
-	disp = this.maze;
+//investigate scope issue with selector variable
+var selector;
+
+Game.prototype.drawMaze = function() {
+
 	$("#maze > tbody").remove();
 	$("#maze").append("<tbody></tbody>");
-	for (var i = 0; i < disp.length; i++) {
+	for (var i = 0; i < maze.length; i++) {
 			$("#maze > tbody").append("<tr>");
-			for (var j = 0; j < disp[i].length; j++) {
+			for (var j = 0; j < maze[i].length; j++) {
 					selector = i+"-"+j;
 					$("#maze > tbody").append("<td id='"+selector+"'>&nbsp;</td>");
-					if (disp[i][j][0] == 0) { $("#"+selector).css("border-top", "2px solid black"); }
-					if (disp[i][j][1] == 0) { $("#"+selector).css("border-right", "2px solid black"); }
-					if (disp[i][j][2] == 0) { $("#"+selector).css("border-bottom", "2px solid black"); }
-					if (disp[i][j][3] == 0) { $("#"+selector).css("border-left", "2px solid black"); }
+					if (maze[i][j][0] == 0) { $("#"+selector).css("border-top", "2px solid black"); }
+					if (maze[i][j][1] == 0) { $("#"+selector).css("border-right", "2px solid black"); }
+					if (maze[i][j][2] == 0) { $("#"+selector).css("border-bottom", "2px solid black"); }
+					if (maze[i][j][3] == 0) { $("#"+selector).css("border-left", "2px solid black"); }
 			}
 			$("#maze > tbody").append("</tr>");
 	}
@@ -38,9 +40,9 @@ Game.prototype.drawMaze = function(myMaze) {
 
 Game.prototype.initializeControls = function playerControls(){
 	// move function used in multiple locations within bind function below
-	var selector = player.location[0] + "-" + player.location[1];
 
 	$(document).bind("keyup", function(e){
+	var selector = player.location[0] + "-" + player.location[1];
 			if(e.which==37 && checkForWall("left")) {
 				//left
 				movePlayer(player.location[1]--);
@@ -50,12 +52,16 @@ Game.prototype.initializeControls = function playerControls(){
 				movePlayer(player.location[0]--);
 				//	DRAW NEW MAZE IF PLAYER WINS
 				if (player.location[0] < 0) {
-					player.location = [(disp[0].length-1),(disp.length-1)];
-					var newMaze = createMaze();
-					drawMaze(newMaze);
+					player.location = [(maze[0].length-1),(maze.length-1)];
+					console.log(player.location);
+					mazeObject = new mazeBuilder(15,15);
+					mazeObject.populateCellsArrays();
+					mazeObject.checkNeighbours();
+					maze = mazeObject.maze;
+					newGame.drawMaze();
 				}
 			}
-			if(e.which==39 && checkForWall("right") && (player.location[1]+1) < myMaze.columns) {
+			if(e.which==39 && checkForWall("right") && (player.location[1]+1) < mazeObject.columns) {
 				//right
 				movePlayer(player.location[1]++);
 			}
@@ -73,6 +79,7 @@ Game.prototype.initializeControls = function playerControls(){
 	}
 
 	function movePlayer(newLocationCommand) {
+
 		$("#" + selector).html("");
 		newLocationCommand;
 		//overwrite selector after move
@@ -85,7 +92,7 @@ Game.prototype.initializePlayers = function() {
 	$("#your-xp").html(player.health + "XP");
 }
 
-Game.prototype.setUpBattles = function(){
+Game.prototype.runBattles = function(){
 	randomBattleMode(goblin);
 
 	function randomBattleMode(enemy) {
@@ -133,22 +140,54 @@ Game.prototype.setUpBattles = function(){
 	function attackInTurns() {
 		// Player turn
     attackSequence(player,goblin)
+		isSomeoneDead(goblin);
 		// Enemy turn
 		attackSequence(goblin,player);
+		isSomeoneDead(player);
 	};
+
+	function isSomeoneDead(character) {
+		//if player dies...game over sequence;
+		if (character.health <= 0 && character.name == "the Wee Man"){
+			$("#attack-button").off("click");
+			$(document).off("keyup");
+
+			character.health = 0;
+			$("#" + character.xpId).html(character.health + "XP.");
+			$("#player-health-bar").append("<p style='width: 200px; font-size: 40px;'>You died.</p>");
+			console.log(character.name + " has died in act of combat. Game Over.");
+
+		}
+		//sequence which takes place when enemy is killed in battle, i.e. to restart the game
+		else if (character.health <= 0 && character.name != "the Wee Man"){
+			$("#attack-button").off("click");
+			character.health = 5; 																						//reset enemy health
+			$("#enemy-health-bar").css("width",character.health * 50 + "px"); //reset enemy health bar
+			$("#attack-bar-white").css("animation","none"); 							//stop attack bar animation
+
+			console.log("You killed " + character.name + ", nice.");
+			console.log(player.name + " has " + player.health + "XP left.");
+
+			$(".battle").toggleClass("hide"); 														//hide all battle specific elements
+			newGame.initializeControls();																							//reinitialise controls for wee man
+			randomBattleMode(character); 																	//restart random encounters
+		}
+	}
 
 	function attackSequence(attacker,receiver) {
 		// Character prototypal methods
 		attacker.attack();
 		receiver.receiveAttack(attacker);
+
 		// Update HTML XP and health bar
 		$("#" + receiver.xpId).html(receiver.health + "XP");
-		if (receiver.name == "the Wee Man") {
+		if (receiver.name === "the Wee Man") {
 			$("#player-health-bar").css("width",receiver.health * 5 + "px");
 		}
-		else if (receiver.name == "Goblin") {
+		else {
 			$("#enemy-health-bar").css("width",receiver.health * 50 + "px");
 		}
+
 	}
 }
 
@@ -156,4 +195,4 @@ var newGame = new Game();
 newGame.drawMaze();
 newGame.initializeControls();
 newGame.initializePlayers();
-newGame.setUpBattles();
+newGame.runBattles();
