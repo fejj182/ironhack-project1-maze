@@ -8,22 +8,22 @@
 //		If that neighbour hasn't been visited, remove the wall between this cell and
 //		that neighbour, and then recurse with that neighbour as the current cell.
 
-function Maze(x,y) {
+function mazeBuilder(x,y) {
 	this.columns = x;
 	this.rows = y;
 	this.totalCells = this.columns * this.rows;
 	this.currentCell = [Math.floor(Math.random()*y), Math.floor(Math.random()*x)];
 	this.path = [];
-	this.visitedCells = [];
+	this.maze = [];
 	this.numberVisited = 0;
 	this.unvisitedCells = [];
 }
 
-Maze.prototype.populateCellsArrays = function(){
+mazeBuilder.prototype.populateCellsArrays = function(){
 	var cols = this.columns;
 	var rows = this.rows;
 	var current = this.currentCell;
-	var vis = this.visitedCells;
+	var vis = this.maze;
 	var unvis = this.unvisitedCells;
 
 	//	Visited Cells - grid represented by arrays of [border-top,border-right,border-bottom,border-left]
@@ -45,8 +45,8 @@ Maze.prototype.populateCellsArrays = function(){
 
 }
 
-Maze.prototype.checkNeighbours = function(){
-	var vis = this.visitedCells;
+mazeBuilder.prototype.checkNeighbours = function(){
+	var vis = this.maze;
 	var unvis = this.unvisitedCells;
 	var path = this.path;
 
@@ -103,9 +103,7 @@ Maze.prototype.checkNeighbours = function(){
 	}
 }
 
-function createMaze() {
-	var myMaze = new Maze(15,15);
-	myMaze.populateCellsArrays();
-	myMaze.checkNeighbours();
-	return myMaze;
-}
+var mazeObject = new mazeBuilder(15,15);
+mazeObject.populateCellsArrays();
+mazeObject.checkNeighbours();
+var maze = mazeObject.maze;
