@@ -206,6 +206,7 @@ $(document).ready(function(){
 				$("#attack-button").off("click");
 		    enemy.health = 5;
 				$("#enemy-health-bar").css("width",enemy.health * 50 + "px");
+				$("#attack-bar-white").css("animation","none");
 				$(".battle").toggleClass("hide");
 				player.movePlayer();
 		    console.log("You killed " + enemy.name + ", nice.");
@@ -225,12 +226,18 @@ $(document).ready(function(){
 					$(".battle").toggleClass("hide");
 					$(document).off("keyup");
 					$("#attack-button").on("click",function(){
-						var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""));
-						var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
-						if (whiteValue > redValue && whiteValue < redValue + 20) {
-							$("#attack-bar-blue").append("<p style='margin-left: 75px; width: 200px'>Bad Mutha POWER BOOST!!!</p>");
-						};
-						battle(goblin);
+						if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
+							$("#attack-bar-white").css("animation","upDown 2.5s linear infinite");
+						}
+						else {
+							var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""));
+							var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
+							if (whiteValue > redValue && whiteValue < redValue + 20) {
+								$("#attack-bar-blue").append("<p style='margin-left: 75px; width: 200px'>Bad Mutha POWER BOOST!!!</p>");
+								$("#attack-bar-white").css("animation","none");
+							};
+							battle(goblin);
+						}
 					});
 				}
 				else {
