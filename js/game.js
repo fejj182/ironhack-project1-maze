@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
 	// Draw maze
-
 	var myMaze = createMaze(), disp, selector;
 
 	function drawMaze(myMaze) {
@@ -41,7 +40,7 @@ $(document).ready(function(){
 	];
 
 	///////////////////
-	// Character prototype
+	// Character prototype & methods
 	///////////////////
 
 	function Character(name,health,weapon) {
@@ -54,29 +53,33 @@ $(document).ready(function(){
 	  return this.weapon["attackPower"];
 	};
 
-	Character.prototype.receiveDamage = function(attacker){
+	Character.prototype.receiveAttack = function(attacker){
 	  this.health -= attacker.attack();
 
+		//if player dies...game over;
 		if (this.health <= 0 && this.name === "the Wee Man"){
-			//if player dies...game over;
-			$(document).off("keyup");
 			$("#attack-button").off("click");
+			$(document).off("keyup");
+
 			this.health = 0;
 			$("#" + player.xpId).html(this.health + "XP.");
 			$("#player-health-bar").append("<p style='width: 200px; font-size: 40px;'>You died.</p>");
-	    console.log(this.name + " has died in act of combat. Game Over.");
+			console.log(this.name + " has died in act of combat. Game Over.");
+
 	  }
+		//sequence which takes place when enemy is killed in battle, i.e. to restart the game
 	  else if (attacker.health <= 0){
-			//sequence which takes place when enemy is killed in battle, i.e. to restart the game
-			$("#attack-button").off("click");															//turn off attack button
+			$("#attack-button").off("click");
 	    attacker.health = 5; 																						//reset enemy health
 			$("#enemy-health-bar").css("width",attacker.health * 50 + "px"); //reset enemy health bar
 			$("#attack-bar-white").css("animation","none"); 							//stop attack bar animation
-			$(".battle").toggleClass("hide"); 														//hide all battle specific elements
-			this.movePlayer();																					//reinitialise controls for wee man
+
 	    console.log("You killed " + attacker.name + ", nice.");
 			console.log(this.name + " has " + this.health + "XP left.");
-			randomBattleMode(attacker); //restart random encounters
+
+			$(".battle").toggleClass("hide"); 														//hide all battle specific elements
+			playerControls();																							//reinitialise controls for wee man
+			randomBattleMode(attacker); 																	//restart random encounters
 	  }
 	};
 
@@ -95,60 +98,57 @@ $(document).ready(function(){
 
 	Player1.prototype = Object.create(Character.prototype);
 
-	Player1.prototype.checkForWall = function(direction){
-		var checkSelector = this.location[0] + "-" + (this.location[1]);
+	function checkForWall(direction){
+		var checkSelector = player.location[0] + "-" + (player.location[1]);
 		var border = $("#" + checkSelector).css("border-" + direction);
 		var borderCheck = border.indexOf("2px") == -1;
 		return borderCheck;
 	}
 
-	Player1.prototype.movePlayer = function(){
+	function movePlayer(newLocationCommand) {
+		$("#" + selector).html("");
+		newLocationCommand;
+		//overwrite selector after move
+		selector = player.location[0] + "-" + player.location[1];
+		$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+	}
 
+	function playerControls(){
 	// move function used in multiple locations within bind function below
-		function move(newLocationCommand) {
-			$("#" + selector).html("");
-			newLocationCommand;
-			//overwrite selector after move
-			selector = player.location[0] + "-" + player.location[1];
-			$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
-		}
-
-		function newMaze(){
-			player.location = [(disp[0].length-1),(disp.length-1)];
-			var newMaze = createMaze();
-			drawMaze(newMaze);
-		}
-
 		$(document).bind("keyup", function(e){
 			var selector = player.location[0] + "-" + player.location[1];
-				if(e.which==37 && player.checkForWall("left")) {
+				if(e.which==37 && checkForWall("left")) {
 					//left
-					move(player.location[1]--);
+					movePlayer(player.location[1]--);
 				}
-				if(e.which==38 && player.checkForWall("top")) {
+				if(e.which==38 && checkForWall("top")) {
 					//up
-					move(player.location[0]--);
+					movePlayer(player.location[0]--);
+					//	DRAW NEW MAZE IF PLAYER WINS
 					if (player.location[0] < 0) {
-						newMaze();
+						player.location = [(disp[0].length-1),(disp.length-1)];
+						var newMaze = createMaze();
+						drawMaze(newMaze);
 					}
 				}
-				if(e.which==39 && player.checkForWall("right") && (player.location[1]+1) < myMaze.columns) {
+				if(e.which==39 && checkForWall("right") && (player.location[1]+1) < myMaze.columns) {
 					//right
-					move(player.location[1]++);
+					movePlayer(player.location[1]++);
 				}
-				if(e.which==40 && player.checkForWall("bottom")) {
+				if(e.which==40 && checkForWall("bottom")) {
 					//down
-					move(player.location[0]++);
+					movePlayer(player.location[0]++);
 				}
 		})
 	}
 
 	var player;
+
 	function createPlayer(){
 		player = new Player1("the Wee Man",50,weapons[0]);
+		playerControls();
 		$("#your-xp").html(player.health + "XP");
 		console.log(player);
-		player.movePlayer();
 	}
 
 	createPlayer();
@@ -167,89 +167,85 @@ $(document).ready(function(){
 
 	Enemy.prototype = Object.create(Character.prototype);
 
+	// create Goblin
 	var goblin = new Enemy("Goblin",5,weapons[1]);
-
 	console.log(goblin);
 
-	///add Crow and Ogre
-
-	//////////////////
-	// Attack/Receive Damage
-	//////////////////
-
-	function playerAttack(enemy){
-		player.attack();
-		enemy.receiveDamage(player);
-		$("#" + enemy.xpId).html(enemy.health + "XP");
-		$("#enemy-health-bar").css("width",enemy.health * 50 + "px");
-	}
-
-	function enemyAttack(enemy){
-		enemy.attack();
-		player.receiveDamage(enemy);
-		$("#" + player.xpId).html(player.health + "XP");
-		$("#player-health-bar").css("width",player.health * 5 + "px");
-	}
+	// add Crow and Ogre - next
 
 	//////////////////////
 	// Random battle generator
 	//////////////////////
 
-	//attack sequence which runs on 'Attack' click
-
-	var attackInTurns = function() {
-	  var turn = [0,1];
-	  if (turn[0] === 0){
-	    playerAttack(goblin);
-			console.log(goblin.health);
-			turn.shift();
-			turn.push(0);
-	  }
-	  if (turn[0] === 1){
-			enemyAttack(goblin);
-			console.log(player.health);
-			turn.shift();
-			turn.push(1);
-	  }
-	};
-
-	function randomBattleMode(enemy) {
-		//Starts a battle every X seconds
-		var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
-		console.log(battleTime);
-
-		setTimeout(function(){
-			$(document).off("keyup");
-			console.log("Battle!");
-			$("#enemy-xp").html(enemy.health + "XP");
-			$(".battle").toggleClass("hide");
-
-			$("#attack-button").on("click",function(){
-				// on first click, initialises attack bar
-				if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
-					$("#attack-bar-white").css("animation","upDown 2.5s linear infinite");
-				}
-				//on second click, attacks
-				else {
-					var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""));
-					var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
-					if (whiteValue > redValue && whiteValue < redValue + 20) {
-						$("#attack-bar-blue").append("<p style='margin-left: 75px; width: 200px'>Bad Mutha POWER BOOST!!!</p>");
-					};
-					$("#attack-bar-white").css("animation","none");
-					attackInTurns();
-				}
-			});
-		},battleTime);
-	}
-
 	// STARTS THE GAME
 
 	randomBattleMode(goblin);
 
-	///////////////////
-	// Attack and dodge functions
-	///////////////////
+	///////////////////////
+	//	Game functions
+	///////////////////////
 
+	function randomBattleMode(enemy) {
+		//Starts a battle every X seconds
+		var battleTime = Math.floor(((Math.random() * 5) + 5)*1000);
+		console.log(battleTime);
+
+		setTimeout(function(){
+			$(document).off("keyup");									// turn off controls
+			console.log("Battle!");
+			$("#enemy-xp").html(enemy.health + "XP"); // set enemy xp for specific enemy
+			$(".battle").toggleClass("hide");					//display all battle elements
+
+			onClickAttack();
+		},battleTime);
+	}
+
+	// Attack bar functionality
+
+	function onClickAttack(){
+		$("#attack-button").on("click",function(){
+			// on first click, initialises attack bar
+			if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
+				$("#attack-bar-white").css("animation","upDown 2.5s linear infinite");
+			}
+			//on second click, attacks
+			else {
+				var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""));
+				var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
+				if (whiteValue > redValue && whiteValue < redValue + 20) {
+					$("#attack-bar-blue").append("<p style='margin-left: 75px; width: 200px'>Bad Mutha POWER BOOST!!!</p>");
+				};
+				$("#attack-bar-white").css("animation","none");
+				attackInTurns();
+			}
+		})
+	}
+
+	// Dodge bar functionality - will go here
+
+	//////////////////
+	// Attack in turns
+	//////////////////
+
+	function attackInTurns() {
+		// Player turn
+    attackSequence(player,goblin)
+		// Enemy turn
+		attackSequence(goblin,player);
+	};
+
+	function attackSequence(attacker,receiver) {
+		// Character prototypal methods
+		attacker.attack();
+		receiver.receiveAttack(attacker);
+		// Update HTML XP and health bar
+		$("#" + receiver.xpId).html(receiver.health + "XP");
+		if (receiver.name == "the Wee Man") {
+			$("#player-health-bar").css("width",receiver.health * 5 + "px");
+		}
+		else if (receiver.name == "Goblin") {
+			$("#enemy-health-bar").css("width",receiver.health * 50 + "px");
+		}
+	}
 
 })
