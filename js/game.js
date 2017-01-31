@@ -51,12 +51,33 @@ $(document).ready(function(){
 	}
 
 	Character.prototype.attack = function(){
-	    return this.weapon["attackPower"];
+	  return this.weapon["attackPower"];
 	};
 
 	Character.prototype.receiveDamage = function(attacker){
 	  this.health -= attacker.attack();
-	  return this.health;
+
+		if (this.health <= 0 && this.name === "the Wee Man"){
+			//if player dies...game over;
+			$(document).off("keyup");
+			$("#attack-button").off("click");
+			this.health = 0;
+			$("#" + player.xpId).html(this.health + "XP.");
+			$("#player-health-bar").append("<p style='width: 200px; font-size: 40px;'>You died.</p>");
+	    console.log(this.name + " has died in act of combat. Game Over.");
+	  }
+	  else if (attacker.health <= 0){
+			//sequence which takes place when enemy is killed in battle, i.e. to restart the game
+			$("#attack-button").off("click");															//turn off attack button
+	    attacker.health = 5; 																						//reset enemy health
+			$("#enemy-health-bar").css("width",attacker.health * 50 + "px"); //reset enemy health bar
+			$("#attack-bar-white").css("animation","none"); 							//stop attack bar animation
+			$(".battle").toggleClass("hide"); 														//hide all battle specific elements
+			this.movePlayer();																					//reinitialise controls for wee man
+	    console.log("You killed " + attacker.name + ", nice.");
+			console.log(this.name + " has " + this.health + "XP left.");
+			randomBattleMode(attacker); //restart random encounters
+	  }
 	};
 
 	///////////////////
@@ -122,138 +143,113 @@ $(document).ready(function(){
 		})
 	}
 
-		var player = new Player1("the Wee Man",50,weapons[0]);
+	var player;
+	function createPlayer(){
+		player = new Player1("the Wee Man",50,weapons[0]);
 		$("#your-xp").html(player.health + "XP");
 		console.log(player);
 		player.movePlayer();
+	}
 
-		/////////////////
-		// Enemy Prototype
-		/////////////////
+	createPlayer();
 
-		function Enemy(name,health,weapon) {
-			Character.call(this,name,health,weapon);
-			this.name = name;
-			this.health = health;
-			this.weapon = weapon;
-			this.xpId = "enemy-xp";
-		}
+	/////////////////
+	// Enemy Prototype
+	/////////////////
 
-		Enemy.prototype = Object.create(Character.prototype);
+	function Enemy(name,health,weapon) {
+		Character.call(this,name,health,weapon);
+		this.name = name;
+		this.health = health;
+		this.weapon = weapon;
+		this.xpId = "enemy-xp";
+	}
 
-		var goblin = new Enemy("Goblin",5,weapons[1]);
+	Enemy.prototype = Object.create(Character.prototype);
 
-		console.log(goblin);
+	var goblin = new Enemy("Goblin",5,weapons[1]);
 
-		///add Crow and Ogre
+	console.log(goblin);
 
-		//////////////////
-		// Attack/Receive Damage
-		//////////////////
+	///add Crow and Ogre
 
-		function playerAttack(enemy){
-			player.attack();
-			enemy.receiveDamage(player);
-			$("#" + enemy.xpId).html(enemy.health + "XP");
-			$("#enemy-health-bar").css("width",enemy.health * 50 + "px");
-		}
+	//////////////////
+	// Attack/Receive Damage
+	//////////////////
 
-		function enemyAttack(enemy){
-			enemy.attack();
-			player.receiveDamage(enemy);
-			$("#" + player.xpId).html(player.health + "XP");
-			$("#player-health-bar").css("width",player.health * 5 + "px");
-		}
+	function playerAttack(enemy){
+		player.attack();
+		enemy.receiveDamage(player);
+		$("#" + enemy.xpId).html(enemy.health + "XP");
+		$("#enemy-health-bar").css("width",enemy.health * 50 + "px");
+	}
 
-		//////////////////////
-		// Random battle generator
-		//////////////////////
+	function enemyAttack(enemy){
+		enemy.attack();
+		player.receiveDamage(enemy);
+		$("#" + player.xpId).html(player.health + "XP");
+		$("#player-health-bar").css("width",player.health * 5 + "px");
+	}
 
-		//attack sequence which runs on 'Attack' click
+	//////////////////////
+	// Random battle generator
+	//////////////////////
 
-		var attackInTurns = function() {
-		  var turn = [0,1];
-		  if (turn[0] === 0){
-		    playerAttack(goblin);
-				console.log(goblin.health);
-				turn.shift();
-				turn.push(0);
-		  }
-		  if (turn[0] === 1){
-				enemyAttack(goblin);
-				console.log(player.health);
-				turn.shift();
-				turn.push(1);
-		  }
-		};
+	//attack sequence which runs on 'Attack' click
 
-		//battle sequence which runs until someone dies
+	var attackInTurns = function() {
+	  var turn = [0,1];
+	  if (turn[0] === 0){
+	    playerAttack(goblin);
+			console.log(goblin.health);
+			turn.shift();
+			turn.push(0);
+	  }
+	  if (turn[0] === 1){
+			enemyAttack(goblin);
+			console.log(player.health);
+			turn.shift();
+			turn.push(1);
+	  }
+	};
 
-		var battle = function(enemy) {
-			if (player.health > 0 && enemy.health > 0){
-				attackInTurns();
-			}
+	function randomBattleMode(enemy) {
+		//Starts a battle every X seconds
+		var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
+		console.log(battleTime);
 
-		  if (player.health <= 0){
-				//if player dies...game over;
-				player.health = 0;
-				$("#" + player.xpId).html(player.health + "XP.");
-				$("#player-health-bar").append("<p style='width: 200px; font-size: 40px;'>You died.</p>");
-		    console.log(player.name + " has died in act of combat. Game Over.");
-		  }
-		  else if (enemy.health <= 0){
-				//sequence which takes place when enemy is killed in battle, i.e. to restart the game
-				$("#attack-button").off("click");	//turn off attack button
-		    enemy.health = 5; //reset enemy health
-				$("#enemy-health-bar").css("width",enemy.health * 50 + "px"); //reset enemy health bar
-				$("#attack-bar-white").css("animation","none"); //stop attack bar animation
-				$(".battle").toggleClass("hide"); //hide all battle specific elements
-				player.movePlayer();	//reinitialise controls for wee man
-		    console.log("You killed " + enemy.name + ", nice.");
-				console.log(player.name + " has " + player.health + "XP left.");
-				randomBattleMode(enemy); //restart random encounters
-		  }
-		};
+		setTimeout(function(){
+			$(document).off("keyup");
+			console.log("Battle!");
+			$("#enemy-xp").html(enemy.health + "XP");
+			$(".battle").toggleClass("hide");
 
-
-		function randomBattleMode(enemy) {
-			var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
-			console.log(battleTime);
-			setTimeout(function(){
-				if(player.health > 0) {
-					$("#enemy-xp").html(enemy.health + "XP");
-					console.log("Battle!");
-					$(".battle").toggleClass("hide");
-					$(document).off("keyup");
-					$("#attack-button").on("click",function(){
-						if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
-							$("#attack-bar-white").css("animation","upDown 2.5s linear infinite");
-						}
-						else {
-							var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""));
-							var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
-							if (whiteValue > redValue && whiteValue < redValue + 20) {
-								$("#attack-bar-blue").append("<p style='margin-left: 75px; width: 200px'>Bad Mutha POWER BOOST!!!</p>");
-								$("#attack-bar-white").css("animation","none");
-							};
-							battle(goblin);
-						}
-					});
+			$("#attack-button").on("click",function(){
+				// on first click, initialises attack bar
+				if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
+					$("#attack-bar-white").css("animation","upDown 2.5s linear infinite");
 				}
+				//on second click, attacks
 				else {
-					$("#attack-button").off("click");
-					$(document).off("keyup");
+					var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""));
+					var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
+					if (whiteValue > redValue && whiteValue < redValue + 20) {
+						$("#attack-bar-blue").append("<p style='margin-left: 75px; width: 200px'>Bad Mutha POWER BOOST!!!</p>");
+					};
+					$("#attack-bar-white").css("animation","none");
+					attackInTurns();
 				}
-			},battleTime);
-		}
+			});
+		},battleTime);
+	}
 
-		//starts the game
+	// STARTS THE GAME
 
-		randomBattleMode(goblin);
+	randomBattleMode(goblin);
 
-		///////////////////
-		// Attack and dodge functions
-		///////////////////
+	///////////////////
+	// Attack and dodge functions
+	///////////////////
 
 
 })
