@@ -4,12 +4,21 @@ button {
 
 p {
 	margin-top: 50px;
-	font-size: 24px;
+	font-size: 30px;
 }
 
 span {
 	margin-left: 20px;
 	margin-right: 20px;
+}
+
+i {
+	font-size: 18px !important;
+}
+
+h2 {
+	font-size: 36px !important;
+	margin-top: 100px;
 }
 
 .row {
@@ -25,6 +34,10 @@ span {
 	display: none;
 }
 
+.disappear {
+	opacity: 0;
+}
+
 .dodge-hide {
 	display: none;
 }
@@ -38,10 +51,31 @@ span {
 }
 
 .health-bar {
-	width: 250px;
+	width: 300px;
 	height: 40px;
 	margin-top: 20px;
-	margin-left: 20px;
+}
+
+#arrow-keys, #space-bar {
+	font-size: 50px;
+}
+
+#arrow, #space-bar {
+	animation: flashing 0.4s infinite;
+}
+
+@keyframes flashing {
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
 }
 
 #maze {
@@ -50,13 +84,13 @@ span {
 }
 
 #maze td {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
 	text-align: center;
 }
 
 #goblin {
-	width: 90%;
+	width: 70%;
 	height: auto;
 	margin: 0 auto;
 }
@@ -66,6 +100,7 @@ span {
 }
 
 #enemy-health-bar {
+	margin-left: 50px;
 	background-color: red;
 }
 

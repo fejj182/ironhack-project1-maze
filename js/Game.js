@@ -34,7 +34,7 @@ Game.prototype.drawMaze = function() {
 			}
 			$("#maze > tbody").append("</tr>");
 	}
-	$("#0-0").css("border-top","none");
+	$("#0-0").css({"border-top":"none", "background-color":"chartreuse", "animation":"flashing 2s"});
 	$("#" + selector).css("border-right","none");
 	$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
 }
@@ -93,6 +93,17 @@ Game.prototype.initializePlayers = function() {
 	$("#your-xp").html(player.health + "XP");
 }
 
+Game.prototype.removeInstructions = function() {
+	setTimeout(function(){
+		$("h2:first-child").toggleClass("disappear");
+		$("h2:nth-child(2)").toggleClass("disappear"); //becomes first child when first one is removed
+	},2000)
+	setTimeout(function(){
+		$("h2:first-child").remove();
+		$("h2:first-child").remove();
+	},4000)
+}
+
 Game.prototype.spaceBarFunction = function(mode) {
 
 	$(document).bind("keyup", function(e){
@@ -114,7 +125,7 @@ Game.prototype.runBattles = function(){
 
 	function randomBattleMode(enemy) {
 		//Starts a battle every X seconds
-		var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
+		var battleTime = Math.floor(((Math.random() * 5) + 7.5)*1000);
 		console.log(battleTime);
 
 		setTimeout(function(){
@@ -196,10 +207,10 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 		// Update HTML XP and health bar
 		$("#" + receiver.xpId).html(receiver.health + "XP");
 		if (receiver.name === "the Wee Man") {
-			$("#player-health-bar").css("width",receiver.health * 5 + "px");
+			$("#player-health-bar").css("width",receiver.health * 6 + "px");
 		}
 		else {
-			$("#enemy-health-bar").css("width",receiver.health * 25 + "px");
+			$("#enemy-health-bar").css("width",receiver.health * 30 + "px");
 		}
 
 	}
@@ -224,7 +235,7 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 			$(".dodge-bar").toggleClass("hide");
 			setTimeout(function(){
 				character.health = 10; 																						//reset enemy health
-				$("#enemy-health-bar").css("width",character.health * 25 + "px"); //reset enemy health bar
+				$("#enemy-health-bar").css("width",character.health * 30 + "px"); //reset enemy health bar
 				$("#attack-bar-white").css("animation","none");										//stop attack bar animation
 				$("#attack-bar-white").css("top: 0"); 														//reset attack bar position
 
@@ -273,4 +284,5 @@ var newGame = new Game();
 newGame.drawMaze();
 newGame.initializeControls();
 newGame.initializePlayers();
+newGame.removeInstructions();
 newGame.runBattles();
