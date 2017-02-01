@@ -72,9 +72,17 @@ span {
 	background-color: blue;
 }
 
+#attack-bar-yellow {
+	position: absolute;
+	top: 20px;
+	width: 48px;
+	height: 75px;
+	background-color: yellow;
+}
+
 #attack-bar-red {
 	position: absolute;
-	top: 20%;
+	top: 40px;
 	width: 48px;
 	height: 20px;
 	background-color: red;

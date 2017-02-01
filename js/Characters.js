@@ -8,12 +8,14 @@ function Character(name,health,weapon) {
 	this.weapon = weapon;
 }
 
-Character.prototype.attack = function(){
-	return this.weapon["attackPower"];
+Character.prototype.attack = function(multiplier){
+	console.log(multiplier);
+	console.log(this.weapon.attackPower);
+	return this.weapon.attackPower * multiplier;
 };
 
-Character.prototype.receiveAttack = function(attacker){
-	this.health -= attacker.attack();
+Character.prototype.receiveAttack = function(attacker,multiplier){
+	this.health -= attacker.attack(multiplier);
 };
 
 ///////////////////
@@ -47,4 +49,4 @@ function Enemy(name,health,weapon) {
 
 Enemy.prototype = Object.create(Character.prototype);
 
-var goblin = new Enemy("Goblin",5,weapons[1]);
+var goblin = new Enemy("Goblin",10,weapons[1]);

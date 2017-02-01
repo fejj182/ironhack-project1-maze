@@ -41,7 +41,7 @@ Game.prototype.drawMaze = function() {
 Game.prototype.initializeControls = function playerControls(){
 	// move function used in multiple locations within bind function below
 
-	$(document).bind("keyup", function(e){
+	$(document).bind("keyup", function controls(e){
 	var selector = player.location[0] + "-" + player.location[1];
 			if(e.which==37 && checkForWall("left")) {
 				//left
@@ -97,7 +97,7 @@ Game.prototype.runBattles = function(){
 
 	function randomBattleMode(enemy) {
 		//Starts a battle every X seconds
-		var battleTime = Math.floor(((Math.random() * 5) + 5)*1000);
+		var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
 		console.log(battleTime);
 
 		setTimeout(function(){
@@ -113,22 +113,47 @@ Game.prototype.runBattles = function(){
 	// Attack bar functionality
 
 	function onClickAttack(){
-		$("#attack-button").on("click",function(){
-			// on first click, initialises attack bar
-			if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
-				$("#attack-bar-white").css("animation","upDown 2.5s linear infinite");
-			}
-			//on second click, attacks
-			else {
-				var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""));
-				var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
-				if (whiteValue > redValue && whiteValue < redValue + 20) {
-					$("#attack-bar-blue").append("<p style='margin-left: 75px; width: 200px'>Bad Mutha POWER BOOST!!!</p>");
-				};
-				$("#attack-bar-white").css("animation","none");
-				attackInTurns();
-			}
+		$(document).bind("keyup", function spaceAttack(e){
+			if(e.which === 32){
+				// on first click, initialises attack bar
+				if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
+					$("#attack-bar-white").css("animation","upDown 1s linear infinite");
+				}
+				//on second click, attacks
+				else {
+					var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""))+9;
+					var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
+					var yellowValue = Number($("#attack-bar-yellow").css("top").replace(/px/g,""));
+					var multiplier;
+					console.log(whiteValue,redValue,redValue + 16);
+					if (whiteValue > redValue && whiteValue < redValue + 16) {
+						multiplier = 1.5;
+						$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>POWER BOOST!!!</p>");
+						removeHitPower();
+					}
+					else if (whiteValue > yellowValue && whiteValue < yellowValue + 75){
+						multiplier = 1;
+						$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Great hit!</p>");
+						removeHitPower();
+					}
+					else {
+						multiplier = 0;
+						$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Miss!</p>");
+						removeHitPower();
+					}
+					$("#attack-bar-white").css("animation","none");
+					$("#attack-bar-white").css("top",whiteValue + "px");
+
+					attackInTurns(multiplier);
+				}
+    	}
 		})
+
+		function removeHitPower(){
+			setTimeout(function(){
+				$("#hit-power").remove();
+			},750)
+		}
 	}
 
 	// Dodge bar functionality - will go here
@@ -137,47 +162,52 @@ Game.prototype.runBattles = function(){
 	// Attack in turns
 	//////////////////
 
-	function attackInTurns() {
+	function attackInTurns(multiplier) {
 		// Player turn
-    attackSequence(player,goblin)
+    attackSequence(player,goblin,multiplier)
 		isSomeoneDead(goblin);
-		// Enemy turn
-		attackSequence(goblin,player);
+		// Enemy turn - multiplier always 1
+		attackSequence(goblin,player,1);
 		isSomeoneDead(player);
 	};
 
 	function isSomeoneDead(character) {
-		//if player dies...game over sequence;
-		if (character.health <= 0 && character.name == "the Wee Man"){
-			$("#attack-button").off("click");
-			$(document).off("keyup");
 
+		if (character.health <= 0) {
 			character.health = 0;
 			$("#" + character.xpId).html(character.health + "XP.");
-			$("#player-health-bar").append("<p style='width: 200px; font-size: 40px;'>You died.</p>");
-			console.log(character.name + " has died in act of combat. Game Over.");
+			$(document).off("keyup");
+		}
 
+		//if player dies...game over sequence;
+		if (character.health <= 0 && character.name == "the Wee Man"){
+			setTimeout(function(){
+				$("#player-health-bar").append("<p style='width: 200px; font-size: 40px;'>You died.</p>");
+			},1500)
 		}
 		//sequence which takes place when enemy is killed in battle, i.e. to restart the game
 		else if (character.health <= 0 && character.name != "the Wee Man"){
-			$("#attack-button").off("click");
-			character.health = 5; 																						//reset enemy health
-			$("#enemy-health-bar").css("width",character.health * 50 + "px"); //reset enemy health bar
-			$("#attack-bar-white").css("animation","none"); 							//stop attack bar animation
+			setTimeout(function(){
+				character.health = 10; 																						//reset enemy health
+				$("#enemy-health-bar").css("width",character.health * 25 + "px"); //reset enemy health bar
+				$("#attack-bar-white").css("animation","none");										//stop attack bar animation
+				$("#attack-bar-white").css("top: 0"); 														//reset attack bar position
 
-			console.log("You killed " + character.name + ", nice.");
-			console.log(player.name + " has " + player.health + "XP left.");
+				// console.log("You killed " + character.name + ", nice.");
+				// console.log(player.name + " has " + player.health + "XP left.");
 
-			$(".battle").toggleClass("hide"); 														//hide all battle specific elements
-			newGame.initializeControls();																							//reinitialise controls for wee man
-			randomBattleMode(character); 																	//restart random encounters
+				$(".battle").toggleClass("hide"); 														//hide all battle specific elements
+				newGame.initializeControls();																							//reinitialise controls for wee man
+				randomBattleMode(character); 																		//restart random encounters
+			},1500)
 		}
 	}
 
-	function attackSequence(attacker,receiver) {
+	function attackSequence(attacker,receiver,multiplier) {
+		console.log(multiplier);
 		// Character prototypal methods
-		attacker.attack();
-		receiver.receiveAttack(attacker);
+		attacker.attack(multiplier);
+		receiver.receiveAttack(attacker,multiplier);
 
 		// Update HTML XP and health bar
 		$("#" + receiver.xpId).html(receiver.health + "XP");
@@ -185,7 +215,7 @@ Game.prototype.runBattles = function(){
 			$("#player-health-bar").css("width",receiver.health * 5 + "px");
 		}
 		else {
-			$("#enemy-health-bar").css("width",receiver.health * 50 + "px");
+			$("#enemy-health-bar").css("width",receiver.health * 25 + "px");
 		}
 
 	}
