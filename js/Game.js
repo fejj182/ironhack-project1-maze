@@ -105,58 +105,98 @@ Game.prototype.runBattles = function(){
 			console.log("Battle!");
 			$("#enemy-xp").html(enemy.health + "XP"); // set enemy xp for specific enemy
 			$(".battle").toggleClass("hide");					//display all battle elements
+			$(".dodge-bar").toggleClass("hide");
 
-			onClickAttack();
+			spaceFunction();
+
 		},battleTime);
 	}
 
 	// Attack bar functionality
 
-	function onClickAttack(){
-		$(document).bind("keyup", function spaceAttack(e){
+	function spaceFunction(){
+		$(document).bind("keyup", function(e){
 			if(e.which === 32){
-				// on first click, initialises attack bar
-				if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
-					$("#attack-bar-white").css("animation","upDown 1s linear infinite");
-				}
-				//on second click, attacks
-				else {
-					var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""))+9;
-					var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
-					var yellowValue = Number($("#attack-bar-yellow").css("top").replace(/px/g,""));
-					var multiplier;
-					console.log(whiteValue,redValue,redValue + 16);
-					if (whiteValue > redValue && whiteValue < redValue + 16) {
-						multiplier = 1.5;
-						$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>POWER BOOST!!!</p>");
-						removeHitPower();
-					}
-					else if (whiteValue > yellowValue && whiteValue < yellowValue + 75){
-						multiplier = 1;
-						$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Great hit!</p>");
-						removeHitPower();
-					}
-					else {
-						multiplier = 0;
-						$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Miss!</p>");
-						removeHitPower();
-					}
-					$("#attack-bar-white").css("animation","none");
-					$("#attack-bar-white").css("top",whiteValue + "px");
-
-					attackInTurns(multiplier);
-				}
-    	}
+				spaceAttack();
+			}
 		})
+	}
 
-		function removeHitPower(){
-			setTimeout(function(){
-				$("#hit-power").remove();
-			},750)
+	function spaceAttack(){
+		// on first click, initialises attack bar
+		if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
+			$("#attack-bar-white").css("animation","upDown 1s linear infinite");
+		}
+		//on second click, attacks
+		else {
+			var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""))+9;
+			var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
+			var yellowValue = Number($("#attack-bar-yellow").css("top").replace(/px/g,""));
+			var multiplier;
+			console.log(whiteValue,redValue,redValue + 16);
+			if (whiteValue > redValue && whiteValue < redValue + 16) {
+				multiplier = 1.5;
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>POWER BOOST!!!</p>");
+				removeHitPower();
+			}
+			else if (whiteValue > yellowValue && whiteValue < yellowValue + 75){
+				multiplier = 1;
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Great hit!</p>");
+				removeHitPower();
+			}
+			else {
+				multiplier = 0;
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Miss!</p>");
+				removeHitPower();
+			}
+			$("#attack-bar-white").css("animation","none");
+			$("#attack-bar-white").css("top",whiteValue + "px");
+
+			attackInTurns(multiplier);
+
+			// After attack run dodge functionality
+
+			spaceDodge();
 		}
 	}
 
-	// Dodge bar functionality - will go here
+	function removeHitPower(){
+		setTimeout(function(){
+			$("#hit-power").remove();
+		},750)
+	}
+
+	// Dodge bar functionality
+
+	function spaceDodge(){
+		console.log("spacedodge");
+		if ($("#dodge-bar-white").css("animation").indexOf("leftRight") == -1) {
+			$(".dodge-bar").toggleClass("hide");
+			$("#dodge-bar-white").css("animation","leftRight 1s linear infinite");
+			$(document).bind("keyup", function space(e){
+				if(e.which === 32){
+					spaceDodge();
+				}
+			})
+		}
+		else {
+			console.log("else");
+			var whiteValue = Number($("#dodge-bar-white").css("left").replace(/px/g,""))+9;
+			$("#dodge-bar-white").css("animation","none");
+			$("#dodge-bar-white").css("left",whiteValue + "px");
+
+			$(document).bind("keyup", function(e){
+				if(e.which === 32){
+					spaceAttack();
+				}
+			})
+
+			setTimeout(function(){
+				$(".dodge-bar").toggleClass("hide");
+			},1500)
+		}
+	}
+
 
 	//////////////////
 	// Attack in turns
@@ -167,8 +207,8 @@ Game.prototype.runBattles = function(){
     attackSequence(player,goblin,multiplier)
 		isSomeoneDead(goblin);
 		// Enemy turn - multiplier always 1
-		attackSequence(goblin,player,1);
-		isSomeoneDead(player);
+		// attackSequence(goblin,player,1);
+		// isSomeoneDead(player);
 	};
 
 	function isSomeoneDead(character) {
