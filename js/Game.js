@@ -11,6 +11,7 @@ function Game(){
 		playerItems : [],
 		collectibles : []
 	};
+
 }
 
 
@@ -92,37 +93,33 @@ Game.prototype.initializePlayers = function() {
 	$("#your-xp").html(player.health + "XP");
 }
 
-Game.prototype.runBattles = function(){
-	randomBattleMode(goblin);
+Game.prototype.spaceBarFunction = function(mode) {
 
-	function randomBattleMode(enemy) {
-		//Starts a battle every X seconds
-		var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
-		console.log(battleTime);
+	$(document).bind("keyup", function(e){
+		if(e.which === 32){
+			if (mode === "attack") {
+				console.log("attack");
+				newGame.spaceAttack();
+			}
+			else if (mode === "defend") {
+				console.log("switched space to defence");
+				newGame.spaceDodge();
+			}
+		}
+	})
+}
 
+Game.prototype.spaceAttack = function(){
+	function removeHitPower(){
 		setTimeout(function(){
-			$(document).off("keyup");									// turn off controls
-			console.log("Battle!");
-			$("#enemy-xp").html(enemy.health + "XP"); // set enemy xp for specific enemy
-			$(".battle").toggleClass("hide");					//display all battle elements
-			$(".dodge-bar").toggleClass("hide");
-
-			spaceFunction();
-
-		},battleTime);
+			$("#hit-power").remove();
+		},750)
 	}
+
+	onPressAttack();
 
 	// Attack bar functionality
-
-	function spaceFunction(){
-		$(document).bind("keyup", function(e){
-			if(e.which === 32){
-				spaceAttack();
-			}
-		})
-	}
-
-	function spaceAttack(){
+	function onPressAttack(){
 		// on first click, initialises attack bar
 		if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
 			$("#attack-bar-white").css("animation","upDown 1s linear infinite");
@@ -133,7 +130,7 @@ Game.prototype.runBattles = function(){
 			var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
 			var yellowValue = Number($("#attack-bar-yellow").css("top").replace(/px/g,""));
 			var multiplier;
-			console.log(whiteValue,redValue,redValue + 16);
+
 			if (whiteValue > redValue && whiteValue < redValue + 16) {
 				multiplier = 1.5;
 				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>POWER BOOST!!!</p>");
@@ -152,64 +149,77 @@ Game.prototype.runBattles = function(){
 			$("#attack-bar-white").css("animation","none");
 			$("#attack-bar-white").css("top",whiteValue + "px");
 
-			attackInTurns(multiplier);
+			newGame.runAttack(player,goblin,multiplier);
 
 			// After attack run dodge functionality
 
-			spaceDodge();
-		}
-	}
-
-	function removeHitPower(){
-		setTimeout(function(){
-			$("#hit-power").remove();
-		},750)
-	}
-
-	// Dodge bar functionality
-
-	function spaceDodge(){
-		console.log("spacedodge");
-		if ($("#dodge-bar-white").css("animation").indexOf("leftRight") == -1) {
+			$(document).off("keyup");
+			newGame.spaceBarFunction("defend");
 			$(".dodge-bar").toggleClass("hide");
 			$("#dodge-bar-white").css("animation","leftRight 1s linear infinite");
-			$(document).bind("keyup", function space(e){
-				if(e.which === 32){
-					spaceDodge();
-				}
-			})
-		}
-		else {
-			console.log("else");
-			var whiteValue = Number($("#dodge-bar-white").css("left").replace(/px/g,""))+9;
-			$("#dodge-bar-white").css("animation","none");
-			$("#dodge-bar-white").css("left",whiteValue + "px");
-
-			$(document).bind("keyup", function(e){
-				if(e.which === 32){
-					spaceAttack();
-				}
-			})
-
-			setTimeout(function(){
-				$(".dodge-bar").toggleClass("hide");
-			},1500)
 		}
 	}
+}
 
+Game.prototype.spaceDodge = function(){
 
-	//////////////////
-	// Attack in turns
-	//////////////////
+	var whiteValue = Number($("#dodge-bar-white").css("left").replace(/px/g,""))+9;
+	$("#dodge-bar-white").css("animation","none");
+	$("#dodge-bar-white").css("left",whiteValue + "px");
+	var multiplier = 1;
 
-	function attackInTurns(multiplier) {
-		// Player turn
-    attackSequence(player,goblin,multiplier)
-		isSomeoneDead(goblin);
-		// Enemy turn - multiplier always 1
-		// attackSequence(goblin,player,1);
-		// isSomeoneDead(player);
-	};
+	newGame.runAttack(goblin,player,multiplier);
+
+	setTimeout(function(){
+		$(".dodge-bar").toggleClass("hide");
+	},1500)
+
+	$(document).off("keyup");
+	newGame.spaceBarFunction("attack");
+
+}
+
+Game.prototype.runBattles = function(){
+	randomBattleMode(goblin);
+
+	function randomBattleMode(enemy) {
+		//Starts a battle every X seconds
+		var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
+		console.log(battleTime);
+
+		setTimeout(function(){
+			$(document).off("keyup");									// turn off controls
+			console.log("Battle!");
+			$("#enemy-xp").html(enemy.health + "XP"); // set enemy xp for specific enemy
+			$(".battle").toggleClass("hide");					//display all battle elements
+			$(".dodge-bar").toggleClass("hide");
+
+			newGame.spaceBarFunction("attack");
+
+		},battleTime);
+	}
+}
+
+Game.prototype.runAttack = function(attacker,receiver,multiplier) {
+
+	attackSequence(attacker,receiver,multiplier)
+	isSomeoneDead(receiver);
+
+	function attackSequence(attacker,receiver,multiplier) {
+		// Character prototypal methods
+		attacker.attack(multiplier);
+		receiver.receiveAttack(attacker,multiplier);
+
+		// Update HTML XP and health bar
+		$("#" + receiver.xpId).html(receiver.health + "XP");
+		if (receiver.name === "the Wee Man") {
+			$("#player-health-bar").css("width",receiver.health * 5 + "px");
+		}
+		else {
+			$("#enemy-health-bar").css("width",receiver.health * 25 + "px");
+		}
+
+	}
 
 	function isSomeoneDead(character) {
 
@@ -241,23 +251,6 @@ Game.prototype.runBattles = function(){
 				randomBattleMode(character); 																		//restart random encounters
 			},1500)
 		}
-	}
-
-	function attackSequence(attacker,receiver,multiplier) {
-		console.log(multiplier);
-		// Character prototypal methods
-		attacker.attack(multiplier);
-		receiver.receiveAttack(attacker,multiplier);
-
-		// Update HTML XP and health bar
-		$("#" + receiver.xpId).html(receiver.health + "XP");
-		if (receiver.name === "the Wee Man") {
-			$("#player-health-bar").css("width",receiver.health * 5 + "px");
-		}
-		else {
-			$("#enemy-health-bar").css("width",receiver.health * 25 + "px");
-		}
-
 	}
 }
 

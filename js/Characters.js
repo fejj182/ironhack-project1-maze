@@ -9,8 +9,6 @@ function Character(name,health,weapon) {
 }
 
 Character.prototype.attack = function(multiplier){
-	console.log(multiplier);
-	console.log(this.weapon.attackPower);
 	return this.weapon.attackPower * multiplier;
 };
 
