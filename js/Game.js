@@ -102,11 +102,32 @@ Game.prototype.spaceBarFunction = function(mode) {
 				newGame.spaceAttack();
 			}
 			else if (mode === "defend") {
-				console.log("switched space to defence");
+				console.log("defence");
 				newGame.spaceDodge();
 			}
 		}
 	})
+}
+
+Game.prototype.runBattles = function(){
+	randomBattleMode(goblin);
+
+	function randomBattleMode(enemy) {
+		//Starts a battle every X seconds
+		var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
+		console.log(battleTime);
+
+		setTimeout(function(){
+			$(document).off("keyup");									// turn off controls
+			console.log("Battle!");
+			$("#enemy-xp").html(enemy.health + "XP"); // set enemy xp for specific enemy
+			$(".battle").toggleClass("hide");					//display all battle elements
+			$(".dodge-bar").toggleClass("hide");
+
+			newGame.spaceBarFunction("attack");
+
+		},battleTime);
+	}
 }
 
 Game.prototype.spaceAttack = function(){
@@ -149,54 +170,16 @@ Game.prototype.spaceAttack = function(){
 			$("#attack-bar-white").css("animation","none");
 			$("#attack-bar-white").css("top",whiteValue + "px");
 
-			newGame.runAttack(player,goblin,multiplier);
-
 			// After attack run dodge functionality
 
-			$(document).off("keyup");
-			newGame.spaceBarFunction("defend");
-			$(".dodge-bar").toggleClass("hide");
-			$("#dodge-bar-white").css("animation","leftRight 1s linear infinite");
+			$(document).off("keyup"); 												// remove attack function from space bar
+			newGame.spaceBarFunction("defend"); 							//	assign defend function onto space bar
+			$(".dodge-bar").toggleClass("hide");							//	remove hide from dodge bar elements
+			$("#dodge-bar-white").css("animation","leftRight 1s linear infinite");	//animate moving dodge bar
+
+			newGame.runAttack(player,goblin,multiplier);
+
 		}
-	}
-}
-
-Game.prototype.spaceDodge = function(){
-
-	var whiteValue = Number($("#dodge-bar-white").css("left").replace(/px/g,""))+9;
-	$("#dodge-bar-white").css("animation","none");
-	$("#dodge-bar-white").css("left",whiteValue + "px");
-	var multiplier = 1;
-
-	newGame.runAttack(goblin,player,multiplier);
-
-	setTimeout(function(){
-		$(".dodge-bar").toggleClass("hide");
-	},1500)
-
-	$(document).off("keyup");
-	newGame.spaceBarFunction("attack");
-
-}
-
-Game.prototype.runBattles = function(){
-	randomBattleMode(goblin);
-
-	function randomBattleMode(enemy) {
-		//Starts a battle every X seconds
-		var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
-		console.log(battleTime);
-
-		setTimeout(function(){
-			$(document).off("keyup");									// turn off controls
-			console.log("Battle!");
-			$("#enemy-xp").html(enemy.health + "XP"); // set enemy xp for specific enemy
-			$(".battle").toggleClass("hide");					//display all battle elements
-			$(".dodge-bar").toggleClass("hide");
-
-			newGame.spaceBarFunction("attack");
-
-		},battleTime);
 	}
 }
 
@@ -223,10 +206,11 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 
 	function isSomeoneDead(character) {
 
+		// no matter who dies
 		if (character.health <= 0) {
-			character.health = 0;
-			$("#" + character.xpId).html(character.health + "XP.");
-			$(document).off("keyup");
+			character.health = 0;																		// health cannot go below zero
+			$("#" + character.xpId).html(character.health + "XP."); // health updated to zero
+			$(document).off("keyup");																// remove all controls
 		}
 
 		//if player dies...game over sequence;
@@ -237,21 +221,52 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 		}
 		//sequence which takes place when enemy is killed in battle, i.e. to restart the game
 		else if (character.health <= 0 && character.name != "the Wee Man"){
+			$(".dodge-bar").toggleClass("hide");
 			setTimeout(function(){
 				character.health = 10; 																						//reset enemy health
 				$("#enemy-health-bar").css("width",character.health * 25 + "px"); //reset enemy health bar
 				$("#attack-bar-white").css("animation","none");										//stop attack bar animation
 				$("#attack-bar-white").css("top: 0"); 														//reset attack bar position
 
-				// console.log("You killed " + character.name + ", nice.");
-				// console.log(player.name + " has " + player.health + "XP left.");
-
-				$(".battle").toggleClass("hide"); 														//hide all battle specific elements
-				newGame.initializeControls();																							//reinitialise controls for wee man
-				randomBattleMode(character); 																		//restart random encounters
-			},1500)
+				$(".battle").toggleClass("hide"); 															//hide all battle specific elements
+				$(".dodge-bar").toggleClass("hide");
+				newGame.initializeControls();																		//reinitialise controls for wee man
+				newGame.runBattles(); 																		//restart random encounters
+			},750)
 		}
 	}
+}
+
+Game.prototype.spaceDodge = function(){
+
+	//runs only once, as the dodge bar has already been activate on the second press of the attack space bar
+	var whiteValue = Number($("#dodge-bar-white").css("left").replace(/px/g,""))+9;
+	var greenValue = Number($("#dodge-bar-green").css("left").replace(/px/g,""));
+	var multipler;
+	$("#dodge-bar-white").css("animation","none");
+	$("#dodge-bar-white").css("left",whiteValue + "px");
+
+	if (whiteValue > greenValue && whiteValue < greenValue + 20) {
+		multiplier = 0;
+		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 200px'>Nice dodge!</p>");
+		setTimeout(function(){
+			$("#nice-dodge").remove();
+		},1000)
+	}
+	else {
+		multiplier = 1;
+	}
+
+	newGame.runAttack(goblin,player,multiplier);
+
+	setTimeout(function(){
+		$(".dodge-bar").toggleClass("hide");
+	},750)
+
+	// resets space bar to be able to start next attack
+	$(document).off("keyup");
+	newGame.spaceBarFunction("attack");
+
 }
 
 var newGame = new Game();
