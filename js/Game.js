@@ -177,19 +177,19 @@ Game.prototype.spaceAttack = function(){
 			if (whiteValue > redValue && whiteValue < redValue + 16) {
 				multiplier = 1.5;
 				$("#attack-button").css("animation","flashRed 0.75s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>POWER BOOST!!!</p>");
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>-" + (multiplier*player.weapon.attackPower) + " XP. POWER BOOST!!!</p>");
 				removeHitPower();
 			}
 			else if (whiteValue > yellowValue && whiteValue < yellowValue + 75){
 				multiplier = 1;
 				$("#attack-button").css("animation","flashYellow 0.5s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Great hit!</p>");
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>-" + (multiplier*player.weapon.attackPower) + " XP. Great hit!</p>");
 				removeHitPower();
 			}
 			else {
 				multiplier = 0;
 				$("#attack-button").css("animation","flashBlue 0.5s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Miss!</p>");
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>-0 XP. Miss!</p>");
 				removeHitPower();
 			}
 			$("#attack-bar-white").css("animation","none");
@@ -277,7 +277,7 @@ Game.prototype.spaceDodge = function(){
 	if (whiteValue > greenValue && whiteValue < greenValue + 20) {
 		multiplier = 0;
 		$("#dodge-button").css("animation","flashGreen 0.75s");
-		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 200px'>Nice dodge!</p>");
+		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 200px'>No damage taken, nice dodge!</p>");
 		setTimeout(function(){
 			$("#nice-dodge").remove();
 		},1000)
@@ -285,6 +285,10 @@ Game.prototype.spaceDodge = function(){
 	else {
 		$("#dodge-button").css("animation","flashBlue 0.5s");
 		multiplier = 1;
+		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 200px'>-" + (goblin.weapon.attackPower) + " XP. Ouch!</p>");
+		setTimeout(function(){
+			$("#nice-dodge").remove();
+		},1000)
 	}
 
 	// resets space bar to be able to start next attack
