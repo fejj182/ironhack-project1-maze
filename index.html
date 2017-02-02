@@ -5,6 +5,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/animations.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -17,7 +18,9 @@
 				<p>
 					<span>Health:<span id="your-hp"></span></span>
 				</p>
-				<div class="bar health-bar" id="player-health-bar">
+				<div class="bar health-bar" id="player-health-underneath">
+					<div class="health-bar" id="player-health-bar">
+					</div>
 				</div>
 			</div>
 			<div class="col-xs-4 center" id="second-col">
@@ -31,12 +34,15 @@
 					<p class="center">
 						<span class="battle hide">Enemy:<span id="enemy-hp"></span></span>
 					</p>
-					<div class="bar health-bar battle hide" id="enemy-health-bar">
+					<div class="bar health-bar battle hide" id="enemy-health-underneath">
+						<div class="health-bar battle hide" id="enemy-health-bar">
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-xs-4 center" id="third-col">
-				<button class="btn btn-danger hide" id="start-game">Hit Space-Bar Now!</button>
+				<button class="btn btn-danger hide" id="start-game">Hit SPACE-BAR now!</button>
+				<h1 class="title">the Wee Man</h1>
 				<h1 class="battle hide">You've been attacked! Prepare for BATTLE!</h1>
 				<div class="row">
 					<div class="col-xs-2">
@@ -74,10 +80,9 @@
 			</div>
 			<div class="col-xs-4" id="keep-fighting">
 			</div>
-			<div class="col-xs-4 battle hide" id="battle-instructions">
-				<h3>Space-bar</h3>
-				<p>Attack: Press once to aim, then to FIRE</p>
-				<p>Defence: Press to dodge the incoming attack</p>
+			<div class="col-xs-4" id="battle-instructions">
+				<p class="hide">SPACE-BAR once to aim, then to FIRE</p>
+				<p class="hide">SPACE-BAR in the green zone<br>to dodge the incoming attack</p>
 			</div>
 		</div>
 	</div>

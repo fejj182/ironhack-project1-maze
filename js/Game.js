@@ -111,6 +111,23 @@ Game.prototype.initializeControls = function playerControls(){
 		selector = player.location[0] + "-" + player.location[1];
 		$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
 	}
+
+	function uxHelp(){
+		$("#attack-button").on("click",function(){
+			$("#battle-instructions p:first-child").toggleClass("hide");
+			setTimeout(function(){
+				$("#battle-instructions p:first-child").toggleClass("hide");
+			},2000)
+		})
+		$("#dodge-button").on("click",function(){
+			$("#battle-instructions p:nth-child(2)").toggleClass("hide");
+			setTimeout(function(){
+				$("#battle-instructions p:nth-child(2)").toggleClass("hide");
+			},2000)
+		})
+	}
+
+	uxHelp();
 }
 
 Game.prototype.initializePlayers = function() {

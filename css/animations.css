@@ -1,0 +1,144 @@
+@keyframes flashing {
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes flashGrey{
+	50% {
+		background-color: grey;
+	}
+}
+
+@keyframes flashBlack{
+	50% {
+		background-color: black;
+		color: white;
+	}
+}
+
+@keyframes flashBlue{
+	50% {
+		background-color: rgba(0, 0, 255, 0.75);
+		color: white;
+	}
+
+	100% {
+		background-color: inherit;
+		color: inherit;
+	}
+}
+
+@keyframes flashYellow{
+	50% {
+		background-color: 	rgba(255,255,0,0.5);
+	}
+
+	100% {
+		background-color: inherit;
+	}
+}
+
+@keyframes flashRed{
+	0% {
+		background-color: rgba(255, 0, 0, 0.5);
+	}
+
+	25% {
+		background-color: inherit;
+		font-weight: normal;
+	}
+
+	50% {
+		background-color: rgba(255, 0, 0, 0.5);
+	}
+
+	75% {
+		background-color: inherit;
+		font-weight: normal;
+	}
+	100% {
+		background-color: rgba(255, 0, 0, 0.5);
+	}
+}
+
+@keyframes flashGreen{
+	13% {
+		background-color: green;
+		color: white;
+	}
+
+	25% {
+		background-color: inherit;
+		color: inherit;
+		font-weight: normal;
+	}
+
+	37% {
+		background-color: green;
+		color: white;
+	}
+
+	50% {
+		background-color: inherit;
+		color: inherit;
+		font-weight: normal;
+	}
+	63% {
+		background-color: green;
+		color: white;
+	}
+
+	75% {
+		background-color: inherit;
+		color: inherit;
+		font-weight: normal;
+	}
+
+	87% {
+		background-color: green;
+		color: white;
+	}
+
+	100% {
+		background-color: inherit;
+		color: inherit;
+		font-weight: normal;
+	}
+}
+
+@keyframes upDown {
+	0% {
+		top: 0;
+	}
+
+	50% {
+		top: 100%;
+	}
+
+	100% {
+		top: 0;
+	}
+}
+
+@keyframes leftRight {
+	0% {
+		left: 0;
+	}
+
+	50% {
+		left: 100%;
+	}
+
+	100% {
+		left: 0;
+	}
+}
