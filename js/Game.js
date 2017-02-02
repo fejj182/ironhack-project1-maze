@@ -34,9 +34,11 @@ Game.prototype.drawMaze = function() {
 			}
 			$("#maze > tbody").append("</tr>");
 	}
-	$("#0-0").css({"border-top":"none", "background-color":"chartreuse", "animation":"flashing 2s"});
+
+	$("#0-0").css({"border-top":"none", "background-color":"chartreuse"});
 	$("#" + selector).css("border-right","none");
 	$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+
 }
 
 Game.prototype.initializeControls = function playerControls(){
@@ -102,6 +104,14 @@ Game.prototype.removeInstructions = function() {
 		$("h2:first-child").remove();
 		$("h2:first-child").remove();
 	},4000)
+	setTimeout(function(){
+		$("#0-0").css({"border-top":"none", "background-color":"chartreuse", "animation":"flashing 0.4s infinite"});
+		$("#arrows-pic").css({"animation":"flashing 0.4s infinite"});
+	},4000)
+	setTimeout(function(){
+		$("#0-0").css({"animation":"none"});
+		$("#arrows-pic").css({"animation":"none"});
+	},6000)
 }
 
 Game.prototype.spaceBarFunction = function(mode) {
@@ -155,6 +165,7 @@ Game.prototype.spaceAttack = function(){
 		// on first click, initialises attack bar
 		if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
 			$("#attack-bar-white").css("animation","upDown 1s linear infinite");
+			$("#attack-button").css("animation","flashBlack 0.5s infinite");
 		}
 		//on second click, attacks
 		else {
@@ -165,21 +176,25 @@ Game.prototype.spaceAttack = function(){
 
 			if (whiteValue > redValue && whiteValue < redValue + 16) {
 				multiplier = 1.5;
+				$("#attack-button").css("animation","flashRed 0.75s");
 				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>POWER BOOST!!!</p>");
 				removeHitPower();
 			}
 			else if (whiteValue > yellowValue && whiteValue < yellowValue + 75){
 				multiplier = 1;
+				$("#attack-button").css("animation","flashYellow 0.5s");
 				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Great hit!</p>");
 				removeHitPower();
 			}
 			else {
 				multiplier = 0;
+				$("#attack-button").css("animation","flashBlue 0.5s");
 				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>Miss!</p>");
 				removeHitPower();
 			}
 			$("#attack-bar-white").css("animation","none");
 			$("#attack-bar-white").css("top",whiteValue + "px");
+			$("#dodge-button").css("animation","flashGrey 0.5s infinite");
 
 			// After attack run dodge functionality
 
@@ -222,6 +237,7 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 			character.health = 0;																		// health cannot go below zero
 			$("#" + character.xpId).html(character.health + "XP."); // health updated to zero
 			$(document).off("keyup");																// remove all controls
+			console.log("dead");
 		}
 
 		//if player dies...game over sequence;
@@ -238,6 +254,7 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 				$("#enemy-health-bar").css("width",character.health * 30 + "px"); //reset enemy health bar
 				$("#attack-bar-white").css("animation","none");										//stop attack bar animation
 				$("#attack-bar-white").css("top: 0"); 														//reset attack bar position
+				$("#attack-button").css("animation","none");
 
 				$(".battle").toggleClass("hide"); 															//hide all battle specific elements
 				$(".dodge-bar").toggleClass("hide");
@@ -259,24 +276,26 @@ Game.prototype.spaceDodge = function(){
 
 	if (whiteValue > greenValue && whiteValue < greenValue + 20) {
 		multiplier = 0;
+		$("#dodge-button").css("animation","flashGreen 0.75s");
 		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 200px'>Nice dodge!</p>");
 		setTimeout(function(){
 			$("#nice-dodge").remove();
 		},1000)
 	}
 	else {
+		$("#dodge-button").css("animation","flashBlue 0.5s");
 		multiplier = 1;
 	}
+
+	// resets space bar to be able to start next attack
+	$(document).off("keyup");
+	newGame.spaceBarFunction("attack");
 
 	newGame.runAttack(goblin,player,multiplier);
 
 	setTimeout(function(){
 		$(".dodge-bar").toggleClass("hide");
 	},750)
-
-	// resets space bar to be able to start next attack
-	$(document).off("keyup");
-	newGame.spaceBarFunction("attack");
 
 }
 

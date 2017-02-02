@@ -1,5 +1,5 @@
 button {
-	margin-top: 20px;
+	margin-top: 60px;
 }
 
 p {
@@ -16,13 +16,22 @@ i {
 	font-size: 18px !important;
 }
 
+h1 {
+	margin-bottom: 45px;
+}
+
 h2 {
 	font-size: 36px !important;
 	margin-top: 100px;
 }
 
 .row {
-	margin: 50px;
+	margin: 20px 20px 0 20px;
+	/*margin-bottom: 0;*/
+}
+
+.row:nth-of-type(2) {
+	margin-top: 0px;
 }
 
 .btn {
@@ -104,6 +113,127 @@ h2 {
 	background-color: red;
 }
 
+@keyframes flashGrey{
+	50% {
+		background-color: grey;
+	}
+}
+
+@keyframes flashBlack{
+	50% {
+		background-color: black;
+		color: white;
+	}
+}
+
+@keyframes flashBlue{
+	50% {
+		background-color: rgba(0, 0, 255, 0.75);
+		color: white;
+	}
+
+	100% {
+		background-color: inherit;
+		color: inherit;
+	}
+}
+
+@keyframes flashYellow{
+	50% {
+		background-color: 	rgba(255,255,0,0.5);
+	}
+
+	100% {
+		background-color: inherit;
+	}
+}
+
+@keyframes flashRed{
+	13% {
+		background-color: rgba(255, 0, 0, 0.5);
+	}
+
+	25% {
+		background-color: inherit;
+		font-weight: normal;
+	}
+
+	37% {
+		background-color: rgba(255, 0, 0, 0.5);
+	}
+
+	50% {
+		background-color: inherit;
+		font-weight: normal;
+	}
+	63% {
+		background-color: rgba(255, 0, 0, 0.5);
+	}
+
+	75% {
+		background-color: inherit;
+		font-weight: normal;
+	}
+
+	87% {
+		background-color: rgba(255, 0, 0, 0.5);
+	}
+
+	100% {
+		background-color: inherit;
+		font-weight: normal;
+	}
+}
+
+@keyframes flashGreen{
+	13% {
+		background-color: green;
+		color: white;
+	}
+
+	25% {
+		background-color: inherit;
+		color: inherit;
+		font-weight: normal;
+	}
+
+	37% {
+		background-color: green;
+		color: white;
+	}
+
+	50% {
+		background-color: inherit;
+		color: inherit;
+		font-weight: normal;
+	}
+	63% {
+		background-color: green;
+		color: white;
+	}
+
+	75% {
+		background-color: inherit;
+		color: inherit;
+		font-weight: normal;
+	}
+
+	87% {
+		background-color: green;
+		color: white;
+	}
+
+	100% {
+		background-color: inherit;
+		color: inherit;
+		font-weight: normal;
+	}
+}
+
+#attack-button {
+	animation: flashGrey 0.5s infinite;
+}
+
 #attack-bar-blue {
 	position: relative;
 	width: 50px;
@@ -135,6 +265,7 @@ h2 {
 	background-color: white;
 	border: none;
 	animation: none;
+	/*animation: upDown 1s linear infinite;*/
 }
 
 @keyframes upDown {
@@ -188,4 +319,20 @@ h2 {
 	100% {
 		left: 0;
 	}
+}
+
+#arrows-pic {
+	height: auto;
+	width: 30%;
+	margin-top: 35px;
+	margin-left: 90px;
+}
+
+#instructions h3 {
+	text-decoration: underline;
+}
+
+#instructions p {
+	font-size: 24px;
+	margin: auto;
 }

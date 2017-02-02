@@ -9,57 +9,69 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<div class="col-xs-3 col-xs-offset-1">
-			<table id="maze">
-				<tbody></tbody>
-			</table>
-			<p>
-				<span>Health:<span id="your-xp"></span></span>
-			</p>
-			<div class="bar health-bar" id="player-health-bar">
-			</div>
-		</div>
-		<div class="col-xs-4 center">
-			<h2> Navigate the tower with the<br><span id="arrow-keys"><span id="arrow">ARROW</span>keys</span></h2>
-			<h2 class="disappear"> Attack and dodge with the<br><span id="space-bar">SPACE-BAR</span></h2>
-			<div class="row">
-				<img src="img/goblin.png" alt="goblin" class="battle hide" id="goblin">
-				<p class="center">
-					<span class="battle hide">Enemy XP:<span id="enemy-xp"></span></span>
+		<div class="row">
+			<div class="col-xs-3 col-xs-offset-1">
+				<table id="maze">
+					<tbody></tbody>
+				</table>
+				<p>
+					<span>Health:<span id="your-xp"></span></span>
 				</p>
-				<div class="bar health-bar battle hide" id="enemy-health-bar">
+				<div class="bar health-bar" id="player-health-bar">
+				</div>
+			</div>
+			<div class="col-xs-4 center">
+				<h2> Navigate the tower with the<br><span id="arrow-keys"><span id="arrow">ARROW</span>keys</span></h2>
+				<h2 class="disappear"> Attack and dodge with the<br><span id="space-bar">SPACE-BAR</span></h2>
+				<div class="row">
+					<img src="img/goblin.png" alt="goblin" class="battle hide" id="goblin">
+					<p class="center">
+						<span class="battle hide">Enemy XP:<span id="enemy-xp"></span></span>
+					</p>
+					<div class="bar health-bar battle hide" id="enemy-health-bar">
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-3">
+				<h1 class="center battle hide">You've been attacked! Prepare for BATTLE!</h1>
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="bar battle attack-bar hide" id="attack-bar-blue">
+							<div class="bar battle attack-bar hide" id="attack-bar-yellow">
+							</div>
+							<div class="bar battle attack-bar hide" id="attack-bar-red">
+							</div>
+							<div class="bar battle attack-bar hide" id="attack-bar-white">
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-10">
+						<div class="bar battle dodge-bar hide" id="dodge-bar-blue">
+							<div class="bar battle dodge-bar hide" id="dodge-bar-green">
+							</div>
+							<div class="bar battle dodge-bar hide" id="dodge-bar-white">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 center">
+						<button class="btn battle hide" id="attack-button">Attack</button>
+					</div>
+					<div class="col-xs-6 center">
+						<button class="btn battle hide" id="dodge-button">Dodge</button>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-3">
-			<h1 class="center battle hide">You've been attacked! Prepare for BATTLE!</h1>
-			<div class="row">
-				<div class="col-xs-2">
-					<div class="bar battle attack-bar hide" id="attack-bar-blue">
-						<div class="bar battle attack-bar hide" id="attack-bar-yellow">
-						</div>
-						<div class="bar battle attack-bar hide" id="attack-bar-red">
-						</div>
-						<div class="bar battle attack-bar hide" id="attack-bar-white">
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-10">
-					<div class="bar battle dodge-bar hide" id="dodge-bar-blue">
-						<div class="bar battle dodge-bar hide" id="dodge-bar-green">
-						</div>
-						<div class="bar battle dodge-bar hide" id="dodge-bar-white">
-						</div>
-					</div>
-				</div>
+		<div class="row">
+			<div class="col-xs-3 col-xs-offset-1">
+				<img src="img/arrows.png" alt="arrows" class="battle" id="arrows-pic">
 			</div>
-			<div class="row">
-				<div class="col-xs-6 center">
-					<button class="btn battle hide" id="attack-button">Attack</button>
-				</div>
-				<div class="col-xs-6 center">
-					<button class="btn battle hide" id="dodge-button">Dodge</button>
-				</div>
+			<div class="col-xs-4 col-xs-offset-4 battle hide" id="instructions">
+				<h3>Space-bar</h3>
+				<p>Attack: Tap once to aim, then to FIRE</p>
+				<p>Defence: Tap to dodge the incoming attack</p>
 			</div>
 		</div>
 	</div>
