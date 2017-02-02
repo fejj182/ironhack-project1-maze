@@ -41,6 +41,26 @@ Game.prototype.drawMaze = function() {
 
 }
 
+Game.prototype.showInstructions = function() {
+	setTimeout(function(){
+		$("h2:first-child").toggleClass("disappear");
+		$("h2:nth-child(2)").toggleClass("disappear"); //becomes first child when first one is removed
+	},2000)
+	setTimeout(function(){
+		$("h2:nth-child(2)").toggleClass("disappear");
+		$(".instructions").toggleClass("disappear")
+		$("#arrow, #space-bar").css("animation","none");
+	},4000)
+	setTimeout(function(){
+		$("#0-0").css({"border-top":"none", "background-color":"chartreuse", "animation":"flashing 0.4s infinite"});
+		$("#arrows-pic").css({"animation":"flashing 0.4s infinite"});
+	},4000)
+	setTimeout(function(){
+		$("#0-0").css({"animation":"none"});
+		$("#arrows-pic").css({"animation":"none"});
+	},6000)
+}
+
 Game.prototype.initializeControls = function playerControls(){
 	// move function used in multiple locations within bind function below
 
@@ -93,25 +113,6 @@ Game.prototype.initializeControls = function playerControls(){
 
 Game.prototype.initializePlayers = function() {
 	$("#your-xp").html(player.health + "XP");
-}
-
-Game.prototype.removeInstructions = function() {
-	setTimeout(function(){
-		$("h2:first-child").toggleClass("disappear");
-		$("h2:nth-child(2)").toggleClass("disappear"); //becomes first child when first one is removed
-	},2000)
-	setTimeout(function(){
-		$("h2:first-child").remove();
-		$("h2:first-child").remove();
-	},4000)
-	setTimeout(function(){
-		$("#0-0").css({"border-top":"none", "background-color":"chartreuse", "animation":"flashing 0.4s infinite"});
-		$("#arrows-pic").css({"animation":"flashing 0.4s infinite"});
-	},4000)
-	setTimeout(function(){
-		$("#0-0").css({"animation":"none"});
-		$("#arrows-pic").css({"animation":"none"});
-	},6000)
 }
 
 Game.prototype.spaceBarFunction = function(mode) {
@@ -305,7 +306,16 @@ Game.prototype.spaceDodge = function(){
 
 var newGame = new Game();
 newGame.drawMaze();
-newGame.initializeControls();
+newGame.showInstructions();
 newGame.initializePlayers();
-newGame.removeInstructions();
-newGame.runBattles();
+
+$("#start-game").on("click",function(){
+	$("#second-col").prepend("<h1>RUN!</h1>");
+	$("#start-game").remove();
+	$(".instructions").remove();
+	newGame.initializeControls();
+	newGame.runBattles();
+	setTimeout(function(){
+		$("#second-col h1").remove();
+	},1500)
+})

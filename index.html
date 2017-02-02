@@ -10,7 +10,7 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-3 col-xs-offset-1">
+			<div class="col-xs-3 col-xs-offset-1" id="first-col">
 				<table id="maze">
 					<tbody></tbody>
 				</table>
@@ -20,9 +20,12 @@
 				<div class="bar health-bar" id="player-health-bar">
 				</div>
 			</div>
-			<div class="col-xs-4 center">
-				<h2> Navigate the tower with the<br><span id="arrow-keys"><span id="arrow">ARROW</span>keys</span></h2>
-				<h2 class="disappear"> Attack and dodge with the<br><span id="space-bar">SPACE-BAR</span></h2>
+			<div class="col-xs-4 center" id="second-col">
+				<h2 class="instructions"> Navigate the tower with the<br><span id="arrow-keys"><span id="arrow">ARROW</span>keys</span></h2>
+				<h2 class="disappear instructions"> Attack and dodge with the<br><span id="space-bar">SPACE-BAR</span></h2>
+				<h3 class="disappear instructions"><strong>Space-bar</strong></h3>
+				<p class="disappear instructions"><strong>Attack</strong>: Tap once to aim, then to FIRE</p>
+				<p class="disappear instructions"><strong>Defence</strong>: Tap to dodge the incoming attack</p>
 				<div class="row">
 					<img src="img/goblin.png" alt="goblin" class="battle hide" id="goblin">
 					<p class="center">
@@ -32,8 +35,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-3">
-				<h1 class="center battle hide">You've been attacked! Prepare for BATTLE!</h1>
+			<div class="col-xs-3 center" id="third-col">
+				<button class="btn" id="start-game">Start</button>
+				<h1 class="battle hide">You've been attacked! Prepare for BATTLE!</h1>
 				<div class="row">
 					<div class="col-xs-2">
 						<div class="bar battle attack-bar hide" id="attack-bar-blue">
@@ -68,7 +72,7 @@
 			<div class="col-xs-3 col-xs-offset-1">
 				<img src="img/arrows.png" alt="arrows" class="battle" id="arrows-pic">
 			</div>
-			<div class="col-xs-4 col-xs-offset-4 battle hide" id="instructions">
+			<div class="col-xs-4 col-xs-offset-4 battle hide" id="battle-instructions">
 				<h3>Space-bar</h3>
 				<p>Attack: Tap once to aim, then to FIRE</p>
 				<p>Defence: Tap to dodge the incoming attack</p>

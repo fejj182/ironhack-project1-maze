@@ -22,7 +22,11 @@ h1 {
 
 h2 {
 	font-size: 36px !important;
-	margin-top: 100px;
+	margin-top: 50px;
+}
+
+h2:nth-of-type(2) {
+	margin-bottom: 150px;
 }
 
 .row {
@@ -328,11 +332,15 @@ h2 {
 	margin-left: 90px;
 }
 
-#instructions h3 {
+#battle-instructions h3, #second-col h3 {
 	text-decoration: underline;
 }
 
-#instructions p {
+#battle-instructions p, #second-col > p {
 	font-size: 24px;
 	margin: auto;
+}
+
+#second-col h3, #second-col > p {
+	font-size: 28px;
 }
