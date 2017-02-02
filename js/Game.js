@@ -274,7 +274,7 @@ Game.prototype.spaceDodge = function(){
 	$("#dodge-bar-white").css("animation","none");
 	$("#dodge-bar-white").css("left",whiteValue + "px");
 
-	if (whiteValue > greenValue && whiteValue < greenValue + 20) {
+	if (whiteValue > greenValue && whiteValue < greenValue + 25) {
 		multiplier = 0;
 		$("#dodge-button").css("animation","flashGreen 0.75s");
 		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 200px'>No damage taken, nice dodge!</p>");
