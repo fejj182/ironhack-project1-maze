@@ -26,7 +26,7 @@ function Player1(name,health,weapon) {
 	this.location = [(maze[0].length-1),(maze.length-1)];
 	this.health = health;
 	this.weapon = weapon;
-	this.xpId = "your-xp";
+	this.hpId = "your-hp";
 }
 
 Player1.prototype = Object.create(Character.prototype);
@@ -42,7 +42,7 @@ function Enemy(name,health,weapon) {
 	this.name = name;
 	this.health = health;
 	this.weapon = weapon;
-	this.xpId = "enemy-xp";
+	this.hpId = "enemy-hp";
 }
 
 Enemy.prototype = Object.create(Character.prototype);

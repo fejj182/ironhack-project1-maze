@@ -53,11 +53,13 @@ Game.prototype.showInstructions = function() {
 	},4000)
 	setTimeout(function(){
 		$("#0-0").css({"border-top":"none", "background-color":"chartreuse", "animation":"flashing 0.4s infinite"});
-		$("#arrows-pic").css({"animation":"flashing 0.4s infinite"});
+		$("#arrows-pic").css("animation","flashing 0.4s infinite");
 	},4000)
 	setTimeout(function(){
 		$("#0-0").css({"animation":"none"});
 		$("#arrows-pic").css({"animation":"none"});
+		$("#start-game").toggleClass("hide");
+		$("#start-game").css("animation","flashing 1s infinite");
 	},6000)
 }
 
@@ -112,7 +114,7 @@ Game.prototype.initializeControls = function playerControls(){
 }
 
 Game.prototype.initializePlayers = function() {
-	$("#your-xp").html(player.health + "XP");
+	$("#your-hp").html(player.health + "HP");
 }
 
 Game.prototype.spaceBarFunction = function(mode) {
@@ -137,12 +139,13 @@ Game.prototype.runBattles = function(){
 	function randomBattleMode(enemy) {
 		//Starts a battle every X seconds
 		var battleTime = Math.floor(((Math.random() * 5) + 7.5)*1000);
+		// var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
 		console.log(battleTime);
 
 		setTimeout(function(){
 			$(document).off("keyup");									// turn off controls
 			console.log("Battle!");
-			$("#enemy-xp").html(enemy.health + "XP"); // set enemy xp for specific enemy
+			$("#enemy-hp").html(enemy.health + "HP"); // set enemy hp for specific enemy
 			$(".battle").toggleClass("hide");					//display all battle elements
 			$(".dodge-bar").toggleClass("hide");
 
@@ -165,8 +168,8 @@ Game.prototype.spaceAttack = function(){
 	function onPressAttack(){
 		// on first click, initialises attack bar
 		if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
-			$("#attack-bar-white").css("animation","upDown 1s linear infinite");
-			$("#attack-button").css("animation","flashBlack 0.5s infinite");
+			$("#attack-bar-white").css("animation","upDown 1.25s linear infinite");
+			// $("#attack-button").css("animation","flashBlack 0.5s infinite");
 		}
 		//on second click, attacks
 		else {
@@ -177,20 +180,20 @@ Game.prototype.spaceAttack = function(){
 
 			if (whiteValue > redValue && whiteValue < redValue + 16) {
 				multiplier = 1.5;
-				$("#attack-button").css("animation","flashRed 0.75s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>-" + (multiplier*player.weapon.attackPower) + " XP. POWER BOOST!!!</p>");
+				$("#attack-button").css("animation","flashRed 0.5s");
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 250px'>Damage: " + (multiplier*player.weapon.attackPower) + " HP. POWER BOOST!!!</p>");
 				removeHitPower();
 			}
 			else if (whiteValue > yellowValue && whiteValue < yellowValue + 75){
 				multiplier = 1;
 				$("#attack-button").css("animation","flashYellow 0.5s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>-" + (multiplier*player.weapon.attackPower) + " XP. Great hit!</p>");
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 250px'>Damage: " + (multiplier*player.weapon.attackPower) + " HP. Great hit!</p>");
 				removeHitPower();
 			}
 			else {
 				multiplier = 0;
 				$("#attack-button").css("animation","flashBlue 0.5s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 200px'>-0 XP. Miss!</p>");
+				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 250px'>Miss!</p>");
 				removeHitPower();
 			}
 			$("#attack-bar-white").css("animation","none");
@@ -202,7 +205,7 @@ Game.prototype.spaceAttack = function(){
 			$(document).off("keyup"); 												// remove attack function from space bar
 			newGame.spaceBarFunction("defend"); 							//	assign defend function onto space bar
 			$(".dodge-bar").toggleClass("hide");							//	remove hide from dodge bar elements
-			$("#dodge-bar-white").css("animation","leftRight 1s linear infinite");	//animate moving dodge bar
+			$("#dodge-bar-white").css("animation","leftRight 1.25s linear infinite");	//animate moving dodge bar
 
 			newGame.runAttack(player,goblin,multiplier);
 
@@ -220,8 +223,8 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 		attacker.attack(multiplier);
 		receiver.receiveAttack(attacker,multiplier);
 
-		// Update HTML XP and health bar
-		$("#" + receiver.xpId).html(receiver.health + "XP");
+		// Update HTML HP and health bar
+		$("#" + receiver.hpId).html(receiver.health + "HP");
 		if (receiver.name === "the Wee Man") {
 			$("#player-health-bar").css("width",receiver.health * 6 + "px");
 		}
@@ -236,7 +239,7 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 		// no matter who dies
 		if (character.health <= 0) {
 			character.health = 0;																		// health cannot go below zero
-			$("#" + character.xpId).html(character.health + "XP."); // health updated to zero
+			$("#" + character.hpId).html(character.health + "HP."); // health updated to zero
 			$(document).off("keyup");																// remove all controls
 			console.log("dead");
 		}
@@ -244,7 +247,8 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 		//if player dies...game over sequence;
 		if (character.health <= 0 && character.name == "the Wee Man"){
 			setTimeout(function(){
-				$("#player-health-bar").append("<p style='width: 200px; font-size: 40px;'>You died.</p>");
+				$("#player-health-bar").append("<p style='width: 250px; font-size: 40px;'>You died.</p>");
+				$("#attack-button").css("animation","none");
 			},1500)
 		}
 		//sequence which takes place when enemy is killed in battle, i.e. to restart the game
@@ -255,13 +259,19 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 				$("#enemy-health-bar").css("width",character.health * 30 + "px"); //reset enemy health bar
 				$("#attack-bar-white").css("animation","none");										//stop attack bar animation
 				$("#attack-bar-white").css("top: 0"); 														//reset attack bar position
-				$("#attack-button").css("animation","none");
+				$("#attack-button").css("animation","flashGrey 0.5s infinite");
+				$("#dodge-button").css("animation","none");
+				$("#keep-fighting").append("<p id='keep-running'>ENEMY DEAD. KEEP RUNNING!</p>");
 
 				$(".battle").toggleClass("hide"); 															//hide all battle specific elements
 				$(".dodge-bar").toggleClass("hide");
 				newGame.initializeControls();																		//reinitialise controls for wee man
 				newGame.runBattles(); 																		//restart random encounters
 			},750)
+			setTimeout(function(){
+				$("#keep-running").remove();
+			},1500)
+
 		}
 	}
 }
@@ -278,18 +288,32 @@ Game.prototype.spaceDodge = function(){
 	if (whiteValue > greenValue && whiteValue < greenValue + 25) {
 		multiplier = 0;
 		$("#dodge-button").css("animation","flashGreen 0.75s");
-		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 200px'>No damage taken, nice dodge!</p>");
+		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 250px'>Nice dodge! No damage taken</p>");
+		$("#keep-fighting").append("<p id='try-again'>KEEP FIGHTING!</p>");
+
 		setTimeout(function(){
 			$("#nice-dodge").remove();
+			console.log("animation");
+			$("#attack-button").css("animation","flashGrey 0.5s infinite");
 		},1000)
+		setTimeout(function(){
+			$("#try-again").remove();
+		},2000)
+
 	}
 	else {
 		$("#dodge-button").css("animation","flashBlue 0.5s");
 		multiplier = 1;
-		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 200px'>-" + (goblin.weapon.attackPower) + " XP. Ouch!</p>");
+		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 250px'>You lost " + (goblin.weapon.attackPower) + " HP. Ouch!</p>");
+		$("#keep-fighting").append("<p id='try-again'>KEEP FIGHTING!</p>");
 		setTimeout(function(){
 			$("#nice-dodge").remove();
+			console.log("animation");
+			$("#attack-button").css("animation","flashGrey 0.5s infinite");
 		},1000)
+		setTimeout(function(){
+			$("#try-again").remove();
+		},2000)
 	}
 
 	// resets space bar to be able to start next attack
@@ -309,13 +333,17 @@ newGame.drawMaze();
 newGame.showInstructions();
 newGame.initializePlayers();
 
-$("#start-game").on("click",function(){
-	$("#second-col").prepend("<h1>RUN!</h1>");
-	$("#start-game").remove();
-	$(".instructions").remove();
-	newGame.initializeControls();
-	newGame.runBattles();
-	setTimeout(function(){
-		$("#second-col h1").remove();
-	},1500)
-})
+setTimeout(function(){
+	$(document).on("keyup",function(e){
+		if (e.which == 32) {
+			$("#second-col").prepend("<h1>RUN!</h1>");
+			$("#start-game").remove();
+			$(".instructions").remove();
+			newGame.initializeControls();
+			newGame.runBattles();
+			setTimeout(function(){
+				$("#second-col h1").remove();
+			},1500)
+		}
+	})
+},6000)
