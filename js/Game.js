@@ -16,7 +16,7 @@ function Game(){
 
 
 //investigate scope issue with selector variable
-var selector;
+var selector, randomBoxSelector, randomItem;
 
 Game.prototype.drawMaze = function() {
 
@@ -39,6 +39,19 @@ Game.prototype.drawMaze = function() {
 	$("#" + selector).css("border-right","none");
 	$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
 
+	var randomBox = [Math.floor(Math.random()*maze.length),Math.floor(Math.random()*maze.length)];
+	randomBoxSelector = randomBox[0] + "-" + randomBox[1];
+	$("#" + randomBoxSelector).html("<img src=" + mysteryBoxes.image + " class='mystery-box'>");
+
+	var randomItemNumber = Math.floor(Math.random()*2);
+	randomItem = mysteryBoxes["items"][randomItemNumber];
+	if (randomItemNumber == 0) {
+		randomItem = mysteryBoxes["items"][randomItemNumber]["fullHealth"];
+	}
+	else if (randomItemNumber == 1) {
+		randomItem = mysteryBoxes["items"][randomItemNumber]["class"];
+	}
+	console.log(randomItem);
 }
 
 Game.prototype.showInstructions = function() {
@@ -78,7 +91,6 @@ Game.prototype.initializeControls = function playerControls(){
 				//	DRAW NEW MAZE IF PLAYER WINS
 				if (player.location[0] < 0) {
 					player.location = [(maze[0].length-1),(maze.length-1)];
-					console.log(player.location);
 					mazeObject = new mazeBuilder(15,15);
 					mazeObject.populateCellsArrays();
 					mazeObject.checkNeighbours();
@@ -109,6 +121,21 @@ Game.prototype.initializeControls = function playerControls(){
 		newLocationCommand;
 		//overwrite selector after move
 		selector = player.location[0] + "-" + player.location[1];
+		if(selector == randomBoxSelector) {
+			if (randomItem == "upsideDownMap") {
+				$("#maze").toggleClass("upsideDownMap");
+				randomBoxSelector = [0,0];
+				setTimeout(function(){
+					$("#maze").toggleClass("upsideDownMap")
+				},25000)
+			}
+			else if (randomItem === "50") {
+				player.health = 50;
+				$("#your-hp").html(player.health + "HP");
+				$("#player-health-bar").css("width","300px");
+			}
+		}
+		console.log(selector,randomBoxSelector);
 		$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
 	}
 

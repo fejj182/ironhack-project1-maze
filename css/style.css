@@ -82,6 +82,15 @@ h2:nth-of-type(2) {
 	margin-top: 20px;
 }
 
+.mystery-box {
+	width: 20px;
+	height: 20px;
+}
+
+.upsideDownMap {
+	transform: rotate(180deg);
+}
+
 #arrow-keys, #space-bar {
 	font-size: 50px;
 }

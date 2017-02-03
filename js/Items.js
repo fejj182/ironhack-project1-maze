@@ -10,3 +10,8 @@ var weapons = [
 		attackPower: 4
 	}
 ];
+
+var mysteryBoxes = {
+	items : [{name:"potion",fullHealth:"50"},{class: "upsideDownMap"}],
+	image : "img/mysterybox.png"
+};
