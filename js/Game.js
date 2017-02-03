@@ -81,6 +81,7 @@ Game.prototype.initializeControls = function playerControls(){
 	$(document).bind("keyup", function controls(e){
 		e.preventDefault();
 		console.log(e.which);
+		console.log(checkForWall("left"))
 		var selector = player.location[0] + "-" + player.location[1];
 		if(e.which==37 && checkForWall("left")) {
 			//left
