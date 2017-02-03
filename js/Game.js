@@ -80,7 +80,6 @@ Game.prototype.initializeControls = function playerControls(){
 
 	$(document).bind("keyup", function controls(e){
 		e.preventDefault();
-		console.log(checkForWall("left"));
 		var selector = player.location[0] + "-" + player.location[1];
 		if(e.which==37 && checkForWall("left")) {
 			//left
@@ -111,9 +110,23 @@ Game.prototype.initializeControls = function playerControls(){
 
 	function checkForWall(direction){
 		var checkSelector = player.location[0] + "-" + (player.location[1]);
-		var border = $("#" + checkSelector).css("border-" + direction);
+		var border;
+		switch(direction) {
+			case "left":
+				border = document.getElementById(checkSelector).style.borderLeft;
+				break;
+			case "top":
+				border = document.getElementById(checkSelector).style.borderTop;
+				break;
+			case "right":
+				border = document.getElementById(checkSelector).style.borderRight;
+				break;
+			case "bottom":
+				border = document.getElementById(checkSelector).style.borderBottom;
+				break;
+		}
 		// border.indexOf("2px") == -1 ? true : false;
-		if (border.indexOf("2px")) {
+		if (border.indexOf("2px") == -1) {
 			return true;
 		}
 		return false;
