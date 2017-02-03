@@ -80,8 +80,7 @@ Game.prototype.initializeControls = function playerControls(){
 
 	$(document).bind("keyup", function controls(e){
 		e.preventDefault();
-		console.log(e.which);
-		console.log(checkForWall("left"))
+		console.log(checkForWall("left"));
 		var selector = player.location[0] + "-" + player.location[1];
 		if(e.which==37 && checkForWall("left")) {
 			//left
@@ -113,8 +112,11 @@ Game.prototype.initializeControls = function playerControls(){
 	function checkForWall(direction){
 		var checkSelector = player.location[0] + "-" + (player.location[1]);
 		var border = $("#" + checkSelector).css("border-" + direction);
-		var borderCheck = border.indexOf("2px") == -1;
-		return borderCheck;
+		// border.indexOf("2px") == -1 ? true : false;
+		if (border.indexOf("2px")) {
+			return true;
+		}
+		return false;
 	}
 
 	function movePlayer(newLocationCommand) {
@@ -166,7 +168,6 @@ Game.prototype.spaceBarFunction = function(mode) {
 
 	$(document).bind("keyup", function(e){
 	e.preventDefault();
-	console.log(e.which);
 		if(e.which == 32){
 			if (mode === "attack") {
 				newGame.spaceAttack();
@@ -376,7 +377,6 @@ newGame.initializePlayers();
 setTimeout(function(){
 	$(document).on("keyup",function(e){
 		e.preventDefault();
-		console.log(e.which);
 		if (e.which == 32) {
 			$("#second-col").prepend("<h1>RUN!</h1>");
 			$("#start-game").remove();
