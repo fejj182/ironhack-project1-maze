@@ -166,7 +166,7 @@ Game.prototype.spaceBarFunction = function(mode) {
 	$(document).bind("keyup", function(e){
 	e.preventDefault();
 	console.log(e.which);
-		if(e.which === 32){
+		if(e.which == 32){
 			if (mode === "attack") {
 				newGame.spaceAttack();
 			}
