@@ -75,6 +75,8 @@ Game.prototype.showInstructions = function() {
 	},6000)
 }
 
+var level = 1;
+
 Game.prototype.initializeControls = function playerControls(){
 	// move function used in multiple locations within bind function below
 
@@ -96,6 +98,8 @@ Game.prototype.initializeControls = function playerControls(){
 				mazeObject.checkNeighbours();
 				maze = mazeObject.maze;
 				newGame.drawMaze();
+				level++;
+				$("#level").html(level);
 			}
 		}
 		if(e.which==39 && checkForWall("right") && (player.location[1]+1) < mazeObject.columns) {

@@ -95,6 +95,10 @@ h2:nth-of-type(2) {
 	transform: rotate(180deg);
 }
 
+#level {
+	position: fixed;
+}
+
 #arrow-keys, #space-bar {
 	font-size: 50px;
 }
