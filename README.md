@@ -7,27 +7,27 @@ A frustrating and fast paced maze game with random battles.
 Wanted to improve my skills with grids in the form of an adventure game.
 
 
-### Built with
+## Built with
 
 * CSS3 - for the design and the animations
 * Bootstrap - for the layouts, classes and buttons
 * Javascript - for the main logic of the game
 * jQuery - for the DOM manipulations
 
-### Methodology
+## Methodology
 
 1. Wrote a lot of code - wanted to know what the game would function and look like. Wrote Javascript
 first and then HTML and CSS around it.
 
-2. Refactor and restructure. I was originally working with two Javascript files and ended up with four.  Major restructuring led to a game Class with the properties of the game contained inside.
+2. Refactor and restructure. I was originally working with two Javascript files but ended up with four.  Major restructuring led to a game Class with the properties of the game contained inside.
 
-3. Build an Minimum Viable Product (MVP).
+3. Built an Minimum Viable Product (MVP).
 
-4. Conduct UX testing.
+4. Conducted UX testing.
 
-5. Polish and finish the functionality and presentation.
+5. Polished the functionality and design in order to present it.
 
-### Structure
+## Structure
 
 ```
 function Game(){
