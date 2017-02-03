@@ -80,32 +80,33 @@ Game.prototype.initializeControls = function playerControls(){
 	// move function used in multiple locations within bind function below
 
 	$(document).bind("keyup", function controls(e){
-	var selector = player.location[0] + "-" + player.location[1];
-			if(e.which==37 && checkForWall("left")) {
-				//left
-				movePlayer(player.location[1]--);
+		event.preventDefault();
+		var selector = player.location[0] + "-" + player.location[1];
+		if(e.which==37 && checkForWall("left")) {
+			//left
+			movePlayer(player.location[1]--);
+		}
+		if(e.which==38 && checkForWall("top")) {
+			//up
+			movePlayer(player.location[0]--);
+			//	DRAW NEW MAZE IF PLAYER WINS
+			if (player.location[0] < 0) {
+				player.location = [(maze[0].length-1),(maze.length-1)];
+				mazeObject = new mazeBuilder(15,15);
+				mazeObject.populateCellsArrays();
+				mazeObject.checkNeighbours();
+				maze = mazeObject.maze;
+				newGame.drawMaze();
 			}
-			if(e.which==38 && checkForWall("top")) {
-				//up
-				movePlayer(player.location[0]--);
-				//	DRAW NEW MAZE IF PLAYER WINS
-				if (player.location[0] < 0) {
-					player.location = [(maze[0].length-1),(maze.length-1)];
-					mazeObject = new mazeBuilder(15,15);
-					mazeObject.populateCellsArrays();
-					mazeObject.checkNeighbours();
-					maze = mazeObject.maze;
-					newGame.drawMaze();
-				}
-			}
-			if(e.which==39 && checkForWall("right") && (player.location[1]+1) < mazeObject.columns) {
-				//right
-				movePlayer(player.location[1]++);
-			}
-			if(e.which==40 && checkForWall("bottom")) {
-				//down
-				movePlayer(player.location[0]++);
-			}
+		}
+		if(e.which==39 && checkForWall("right") && (player.location[1]+1) < mazeObject.columns) {
+			//right
+			movePlayer(player.location[1]++);
+		}
+		if(e.which==40 && checkForWall("bottom")) {
+			//down
+			movePlayer(player.location[0]++);
+		}
 	})
 
 	function checkForWall(direction){
@@ -164,6 +165,7 @@ Game.prototype.initializePlayers = function() {
 Game.prototype.spaceBarFunction = function(mode) {
 
 	$(document).bind("keyup", function(e){
+	event.preventDefault();
 		if(e.which === 32){
 			if (mode === "attack") {
 				console.log("attack");
@@ -379,6 +381,7 @@ newGame.initializePlayers();
 
 setTimeout(function(){
 	$(document).on("keyup",function(e){
+		event.preventDefault();
 		if (e.which == 32) {
 			$("#second-col").prepend("<h1>RUN!</h1>");
 			$("#start-game").remove();
