@@ -212,6 +212,8 @@ Game.prototype.runBattles = function(){
 	}
 }
 
+var clickNumber = 1;
+
 Game.prototype.spaceAttack = function(){
 	function removeHitPower(){
 		setTimeout(function(){
@@ -224,12 +226,14 @@ Game.prototype.spaceAttack = function(){
 	// Attack bar functionality
 	function onPressAttack(){
 		// on first click, initialises attack bar
-		if ($("#attack-bar-white").css("animation").indexOf("upDown") == -1) {
+		if (clickNumber ==1) {
 			$("#attack-bar-white").css("animation","upDown 1.25s linear infinite");
-			// $("#attack-button").css("animation","flashBlack 0.5s infinite");
+			clickNumber = 2;
 		}
 		//on second click, attacks
 		else {
+			clickNumber = 1;
+
 			var whiteValue = Number($("#attack-bar-white").css("top").replace(/px/g,""))+9;
 			var redValue = Number($("#attack-bar-red").css("top").replace(/px/g,""));
 			var yellowValue = Number($("#attack-bar-yellow").css("top").replace(/px/g,""));
@@ -258,7 +262,6 @@ Game.prototype.spaceAttack = function(){
 			$("#dodge-button").css("animation","flashGrey 0.5s infinite");
 
 			// After attack run dodge functionality
-
 			$(document).off("keyup"); 												// remove attack function from space bar
 			newGame.spaceBarFunction("defend"); 							//	assign defend function onto space bar
 			$(".dodge-bar").toggleClass("hide");							//	remove hide from dodge bar elements
