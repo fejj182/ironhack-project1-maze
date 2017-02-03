@@ -1,91 +1,100 @@
-# ironhack-project1-maze
-
 # the Wee Man
 
-A frustrating maze game with random battles.
+A frustrating and fast paced maze game with random battles.
 
 ## Inspiration
 
-Wanted to improve programming skills with grids and like adventure games.
+Wanted to improve my skills with grids in the form of an adventure game.
 
-### Technologies
 
-Bootstrap, jQuery, Javascript.
+### Built with
 
-```
-Give examples
-```
+* CSS3 - for the design and the animations
+* Bootstrap - for the layouts, classes and buttons
+* Javascript - for the main logic of the game
+* jQuery - for the DOM manipulations
 
-### Installing
+### Methodology
 
-A step by step series of examples that tell you have to get a development env running
+1. Wrote a lot of code - wanted to know what the game would function and look like. Wrote Javascript
+first and then HTML and CSS around it.
 
-Say what the step will be
+2. Refactor and restructure. I was originally working with two Javascript files and ended up with four.  Major restructuring led to a game Class with the properties of the game contained inside.
 
-```
-Give the example
-```
+3. Build an Minimum Viable Product (MVP).
 
-And repeat
+4. Conduct UX testing.
 
-```
-until finished
-```
+5. Polish and finish the functionality and presentation.
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+### Structure
 
 ```
-Give an example
+function Game(){
+	this.maze = maze;
+
+	this.characters = {
+		player : player,
+		enemies : [goblin]
+	};
+
+	this.items = {
+		weapons: weapons,
+		playerItems : [],
+		collectibles : []
+	};
+}
+
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
+At the bottom of Game.js it only runs  the end only run 3 functions, which in turn run many other functions.
 
 ```
-Give an example
+var newGame = new Game();
+newGame.drawMaze();
+newGame.showInstructions();
+newGame.runGame();
+
 ```
+
+I can do this because all the other Javascript files have been fed in before Game.JS at the bottom of the index.html file.
+
+```	...
+		</div>
+	</div>
+<script src="js/Maze.js"></script>
+<script src="js/Items.js"></script>
+<script src="js/Characters.js"></script>
+<script src="js/Game.js"></script>
+</body>
+
+```
+
+## Challenges
+
+My main challenges concerned the playability of the game - whether the user would understand how to play it. I changed halfway through the project to use the space bar instead of the mouse due to its better compatibility with my attack/dodge functionality. However the user was still keen to click on things and I made a number of changes to try and counteract this.
+
+* First I added a main instructions screen which the user has to read before starting the game.
+* Second I chose to start the game on the space-bar button instead of clicking to get the user used to how
+the game would be played.
+* I put messages on my start/dodge blinkers to show a message telling the user to use the space-bar instead of the mouse.
+
+I feel like the combination of these three things means the user finds it easy to understand how the game is played.
+
+## Possible Next Steps
+
+Wanted to do many other things with the game but due to time constraints decided to take an MVP approach and add in features from there. Some features which could be added next are:
+
+* More items especially collectibles and weapons/armour
+* Increase difficulty as the game progress i.e. each level make enemies more difficult or make the attack and dodge bar move quicker.
+* Theme Music
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+The game is deployed using Github pages which is a reliable and free way of presenting a front end project.
 
 ## Acknowledgments
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
-
-0
+* Thanks to the teachers at Ironhack. Thor, Charlie and Matias.
+* My classmates in the January Web Dev cohort at Ironhack Barcelona.
+* My UX testers from the January UX Design cohort at Ironhack Barcelona.

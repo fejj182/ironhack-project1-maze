@@ -38,6 +38,7 @@ Game.prototype.drawMaze = function() {
 	$("#0-0").css({"border-top":"none", "background-color":"chartreuse"});
 	$("#" + selector).css("border-right","none");
 	$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+	$("#your-hp").html(player.health + "HP");
 
 	var randomBox = [Math.floor(Math.random()*maze.length),Math.floor(Math.random()*maze.length)];
 	randomBoxSelector = randomBox[0] + "-" + randomBox[1];
@@ -175,10 +176,6 @@ Game.prototype.initializeControls = function playerControls(){
 	}
 
 	uxHelp();
-}
-
-Game.prototype.initializePlayers = function() {
-	$("#your-hp").html(player.health + "HP");
 }
 
 Game.prototype.spaceBarFunction = function(mode) {
@@ -389,23 +386,25 @@ Game.prototype.spaceDodge = function(){
 
 }
 
+Game.prototype.runGame = function(){
+	setTimeout(function(){
+		$(document).on("keyup",function(e){
+			e.preventDefault();
+			if (e.which == 32) {
+				$("#second-col").prepend("<h1>RUN!</h1>");
+				$("#start-game").remove();
+				$(".instructions").remove();
+				newGame.initializeControls();
+				newGame.runBattles();
+				setTimeout(function(){
+					$("#second-col h1").remove();
+				},1500)
+			}
+		})
+	},6000)
+}
+
 var newGame = new Game();
 newGame.drawMaze();
 newGame.showInstructions();
-newGame.initializePlayers();
-
-setTimeout(function(){
-	$(document).on("keyup",function(e){
-		e.preventDefault();
-		if (e.which == 32) {
-			$("#second-col").prepend("<h1>RUN!</h1>");
-			$("#start-game").remove();
-			$(".instructions").remove();
-			newGame.initializeControls();
-			newGame.runBattles();
-			setTimeout(function(){
-				$("#second-col h1").remove();
-			},1500)
-		}
-	})
-},6000)
+newGame.runGame();
