@@ -51,7 +51,6 @@ Game.prototype.drawMaze = function() {
 	else if (randomItemNumber == 1) {
 		randomItem = mysteryBoxes["items"][randomItemNumber]["class"];
 	}
-	console.log(randomItem);
 }
 
 Game.prototype.showInstructions = function() {
@@ -81,6 +80,7 @@ Game.prototype.initializeControls = function playerControls(){
 
 	$(document).bind("keyup", function controls(e){
 		e.preventDefault();
+		console.log(e.which);
 		var selector = player.location[0] + "-" + player.location[1];
 		if(e.which==37 && checkForWall("left")) {
 			//left
@@ -136,7 +136,6 @@ Game.prototype.initializeControls = function playerControls(){
 				$("#player-health-bar").css("width","300px");
 			}
 		}
-		console.log(selector,randomBoxSelector);
 		$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
 	}
 
@@ -166,13 +165,12 @@ Game.prototype.spaceBarFunction = function(mode) {
 
 	$(document).bind("keyup", function(e){
 	e.preventDefault();
+	console.log(e.which);
 		if(e.which === 32){
 			if (mode === "attack") {
-				console.log("attack");
 				newGame.spaceAttack();
 			}
 			else if (mode === "defend") {
-				console.log("defence");
 				newGame.spaceDodge();
 			}
 		}
@@ -186,11 +184,9 @@ Game.prototype.runBattles = function(){
 		//Starts a battle every X seconds
 		var battleTime = Math.floor(((Math.random() * 5) + 7.5)*1000);
 		// var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
-		console.log(battleTime);
 
 		setTimeout(function(){
 			$(document).off("keyup");									// turn off controls
-			console.log("Battle!");
 			$("#enemy-hp").html(enemy.health + "HP"); // set enemy hp for specific enemy
 			$(".battle").toggleClass("hide");					//display all battle elements
 			$(".dodge-bar").toggleClass("hide");
@@ -287,7 +283,6 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 			character.health = 0;																		// health cannot go below zero
 			$("#" + character.hpId).html(character.health + "HP."); // health updated to zero
 			$(document).off("keyup");																// remove all controls
-			console.log("dead");
 		}
 
 		//if player dies...game over sequence;
@@ -339,7 +334,6 @@ Game.prototype.spaceDodge = function(){
 
 		setTimeout(function(){
 			$("#nice-dodge").remove();
-			console.log("animation");
 			$("#attack-button").css("animation","flashGrey 0.5s infinite");
 		},1000)
 		setTimeout(function(){
@@ -354,7 +348,6 @@ Game.prototype.spaceDodge = function(){
 		$("#keep-fighting").append("<p id='try-again'>KEEP FIGHTING!</p>");
 		setTimeout(function(){
 			$("#nice-dodge").remove();
-			console.log("animation");
 			$("#attack-button").css("animation","flashGrey 0.5s infinite");
 		},1000)
 		setTimeout(function(){
@@ -382,6 +375,7 @@ newGame.initializePlayers();
 setTimeout(function(){
 	$(document).on("keyup",function(e){
 		e.preventDefault();
+		console.log(e.which);
 		if (e.which == 32) {
 			$("#second-col").prepend("<h1>RUN!</h1>");
 			$("#start-game").remove();
