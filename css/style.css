@@ -3,6 +3,10 @@
     src: url("./Flynn Bold Italic.otf") format("opentype");
 }
 
+html, body {
+	max-height: 100%;
+}
+
 button {
 	margin-top: 10%;
 }
