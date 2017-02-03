@@ -80,7 +80,7 @@ Game.prototype.initializeControls = function playerControls(){
 	// move function used in multiple locations within bind function below
 
 	$(document).bind("keyup", function controls(e){
-		event.preventDefault();
+		e.preventDefault();
 		var selector = player.location[0] + "-" + player.location[1];
 		if(e.which==37 && checkForWall("left")) {
 			//left
@@ -165,7 +165,7 @@ Game.prototype.initializePlayers = function() {
 Game.prototype.spaceBarFunction = function(mode) {
 
 	$(document).bind("keyup", function(e){
-	event.preventDefault();
+	e.preventDefault();
 		if(e.which === 32){
 			if (mode === "attack") {
 				console.log("attack");
@@ -381,7 +381,7 @@ newGame.initializePlayers();
 
 setTimeout(function(){
 	$(document).on("keyup",function(e){
-		event.preventDefault();
+		e.preventDefault();
 		if (e.which == 32) {
 			$("#second-col").prepend("<h1>RUN!</h1>");
 			$("#start-game").remove();
