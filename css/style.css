@@ -7,15 +7,6 @@ html, body {
 	max-height: 100%;
 }
 
-button {
-	margin-top: 10%;
-}
-
-p {
-	margin-top: 50px;
-	font-size: 30px;
-}
-
 span {
 	margin-left: 20px;
 	margin-right: 20px;
@@ -23,10 +14,6 @@ span {
 
 i {
 	font-size: 18px !important;
-}
-
-h1 {
-	margin-bottom: 45px;
 }
 
 h2 {
@@ -38,17 +25,20 @@ h2:nth-of-type(2) {
 	margin-bottom: 150px;
 }
 
-.title {
-	position: fixed;;
-	top: 85%;
-	right: 2.5%;
-	font-size: 64px;
-	font-family: "flynn" ,sans-serif;
+.hide {
+	display: none;
+}
+
+.transparent {
+	opacity: 0;
+}
+
+.center {
+	text-align: center;
 }
 
 .row {
 	margin: 20px 20px 0 20px;
-	/*margin-bottom: 0;*/
 }
 
 .row:nth-of-type(2) {
@@ -58,22 +48,6 @@ h2:nth-of-type(2) {
 .btn {
 	font-size: 32px;
 	padding: 15px;
-}
-
-.hide {
-	display: none;
-}
-
-.disappear {
-	opacity: 0;
-}
-
-.dodge-hide {
-	display: none;
-}
-
-.center {
-	text-align: center;
 }
 
 .bar {
@@ -95,20 +69,12 @@ h2:nth-of-type(2) {
 	transform: rotate(180deg);
 }
 
+#start-game {
+	margin-top: 10%;
+}
+
 #level {
 	position: fixed;
-}
-
-#arrow-keys, #space-bar {
-	font-size: 50px;
-}
-
-#arrow, #space-bar {
-	animation: flashing 0.4s infinite;
-}
-
-#attack-button, #dodge-button {
-	margin-top: 45%;
 }
 
 #maze {
@@ -122,10 +88,35 @@ h2:nth-of-type(2) {
 	text-align: center;
 }
 
-#goblin {
-	width: 70%;
-	height: auto;
-	margin: 0 auto;
+#first-col > p {
+	margin-top: 50px;
+	font-size: 30px;
+}
+
+#arrow-keys, #space-bar {
+	font-size: 50px;
+}
+
+#arrow, #space-bar {
+	animation: flashing 0.4s infinite;
+}
+
+#battle-instructions h3, #second-col h3 {
+	text-decoration: underline;
+}
+
+#battle-instructions p {
+	font-size: 24px;
+	margin: auto;
+}
+
+#second-col h3, #second-col > p {
+	margin: auto;
+	font-size: 28px;
+}
+
+#second-col p:first-of-type {
+	margin-top: 50px;
 }
 
 #player-health-underneath {
@@ -152,6 +143,20 @@ h2:nth-of-type(2) {
 	position:absolute;
 	background-color: red;
 	margin: auto;
+}
+
+#goblin {
+	width: 65%;
+	height: auto;
+	margin: 20px auto 0;
+}
+
+#third-col h1 {
+	margin-bottom: 45px;
+}
+
+#attack-button, #dodge-button {
+	margin-top: 45%;
 }
 
 #attack-button {
@@ -196,7 +201,6 @@ h2:nth-of-type(2) {
 	background-color: white;
 	border: none;
 	animation: none;
-	/*animation: upDown 1s linear infinite;*/
 }
 
 #dodge-bar-blue {
@@ -231,17 +235,13 @@ h2:nth-of-type(2) {
 	margin-left: 90px;
 }
 
-#battle-instructions h3, #second-col h3 {
-	text-decoration: underline;
-}
-
-#battle-instructions p, #second-col > p {
-	font-size: 24px;
+#title {
+	position: fixed;
 	margin: auto;
-}
-
-#second-col h3, #second-col > p {
-	font-size: 28px;
+	top: 85%;
+	right: 2.5%;
+	font-size: 64px;
+	font-family: "flynn" ,sans-serif;
 }
 
 #try-again {

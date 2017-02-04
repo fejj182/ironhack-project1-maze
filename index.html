@@ -1,3 +1,5 @@
+<!-- Structure split into 3 main columns and 3 footer columns -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,58 +12,49 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<div class="row">
+		<!-- main section -->
+		<main class="row">
 			<div class="col-xs-3 col-xs-offset-1" id="first-col">
 				<h1 id="level">1</h1>
+				<!-- maze will be generated in Maze.js and then drawn and inserted below in the Game.drawMaze prototypal method in Game.js -->
 				<table id="maze">
 					<tbody></tbody>
 				</table>
-				<p>
-					<span>Health:<span id="your-hp"></span></span>
-				</p>
+				<p>Health:<span id="your-hp"></span></p>
 				<div class="bar health-bar" id="player-health-underneath">
-					<div class="health-bar" id="player-health-bar">
-					</div>
+					<div class="health-bar" id="player-health-bar"></div>
 				</div>
 			</div>
 			<div class="col-xs-4 center" id="second-col">
 				<h2 class="instructions"> Navigate the tower with the<br><span id="arrow-keys"><span id="arrow">ARROW</span>keys</span></h2>
-				<h2 class="disappear instructions"> Attack and dodge with the<br><span id="space-bar">SPACE-BAR</span></h2>
-				<h3 class="disappear instructions"><strong>Space-bar</strong></h3>
-				<p class="disappear instructions"><strong>Attack</strong>: Press once to aim, then to FIRE</p>
-				<p class="disappear instructions"><strong>Defence</strong>: Press to dodge the incoming attack</p>
-				<div class="row">
-					<img src="img/goblin.png" alt="goblin" class="battle hide" id="goblin">
-					<p class="center">
-						<span class="battle hide">Enemy:<span id="enemy-hp"></span></span>
-					</p>
-					<div class="bar health-bar battle hide" id="enemy-health-underneath">
-						<div class="health-bar battle hide" id="enemy-health-bar">
-						</div>
-					</div>
+				<h2 class="instructions transparent"> Attack and dodge with the<br><span id="space-bar">SPACE-BAR</span></h2>
+				<h3 class="instructions transparent"><strong>Space-bar</strong></h3>
+				<p class="instructions transparent"><strong>Attack</strong>: Press once to aim, then to FIRE</p>
+				<p class="instructions transparent"><strong>Defence</strong>: Press to dodge the incoming attack</p>
+				<!-- elements in second-col above are removed from DOM on game start -->
+				<img src="img/goblin.png" alt="goblin" class="battle hide" id="goblin">
+				<p class="center">
+					<span class="battle hide">Enemy:<span id="enemy-hp"></span></span>
+				</p>
+				<div class="bar health-bar battle hide" id="enemy-health-underneath">
+					<div class="health-bar battle hide" id="enemy-health-bar"></div>
 				</div>
 			</div>
 			<div class="col-xs-4 center" id="third-col">
 				<button class="btn btn-danger hide" id="start-game">Hit SPACE-BAR now!</button>
-				<h1 class="title">the Wee Man</h1>
 				<h1 class="battle hide">You've been attacked! Prepare for BATTLE!</h1>
 				<div class="row">
 					<div class="col-xs-2">
 						<div class="bar battle attack-bar hide" id="attack-bar-blue">
-							<div class="bar battle attack-bar hide" id="attack-bar-yellow">
-							</div>
-							<div class="bar battle attack-bar hide" id="attack-bar-red">
-							</div>
-							<div class="bar battle attack-bar hide" id="attack-bar-white">
-							</div>
+							<div class="bar battle attack-bar hide" id="attack-bar-yellow"></div>
+							<div class="bar battle attack-bar hide" id="attack-bar-red"></div>
+							<div class="bar battle attack-bar hide" id="attack-bar-white"></div>
 						</div>
 					</div>
 					<div class="col-xs-10">
 						<div class="bar battle dodge-bar hide" id="dodge-bar-blue">
-							<div class="bar battle dodge-bar hide" id="dodge-bar-green">
-							</div>
-							<div class="bar battle dodge-bar hide" id="dodge-bar-white">
-							</div>
+							<div class="bar battle dodge-bar hide" id="dodge-bar-green"></div>
+							<div class="bar battle dodge-bar hide" id="dodge-bar-white"></div>
 						</div>
 					</div>
 				</div>
@@ -75,16 +68,18 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<!-- Footer section -->
+		<footer class="row">
 			<div class="col-xs-3 col-xs-offset-1">
 				<img src="img/arrows.png" alt="arrows" class="battle" id="arrows-pic">
 			</div>
 			<div class="col-xs-4" id="keep-fighting">
-				<p class="disappear instructions">Check the mystery boxes for useful items, but beware of what you might find!</p>
+				<p class="instructions transparent">Check the mystery boxes for useful items, but beware of what you might find!</p>
 			</div>
 			<div class="col-xs-4" id="battle-instructions">
 				<p class="hide">SPACE-BAR once to aim, then to FIRE</p>
 				<p class="hide">SPACE-BAR in the green zone<br>to dodge the incoming attack</p>
+				<span id="title">the Wee Man</span>
 			</div>
 		</div>
 	</div>
