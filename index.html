@@ -20,13 +20,15 @@
 				<table id="maze">
 					<tbody></tbody>
 				</table>
-				<p>Health:<span id="your-hp"></span></p>
+				<p>Health: <span id="your-hp"></span></p>
 				<div class="bar health-bar" id="player-health-underneath">
 					<div class="health-bar" id="player-health-bar"></div>
 				</div>
+				<p class="hide" id="died">You died.</p>
 			</div>
 			<div class="col-xs-4 center" id="second-col">
-				<h2 class="instructions"> Navigate the tower with the<br><span id="arrow-keys"><span id="arrow">ARROW</span>keys</span></h2>
+				<h1 class="hide">RUN!</h1>
+				<h2 class="instructions"> Navigate the tower with the <br><span id="arrow-keys"><span id="arrow">ARROW</span> keys</span></h2>
 				<h2 class="instructions transparent"> Attack and dodge with the<br><span id="space-bar">SPACE-BAR</span></h2>
 				<h3 class="instructions transparent"><strong>Space-bar</strong></h3>
 				<p class="instructions transparent"><strong>Attack</strong>: Press once to aim, then to FIRE</p>
@@ -34,7 +36,7 @@
 				<!-- elements in second-col above are removed from DOM on game start -->
 				<img src="img/goblin.png" alt="goblin" class="battle hide" id="goblin">
 				<p class="center">
-					<span class="battle hide">Enemy:<span id="enemy-hp"></span></span>
+					<span class="battle hide">Enemy: <span id="enemy-hp"></span></span>
 				</p>
 				<div class="bar health-bar battle hide" id="enemy-health-underneath">
 					<div class="health-bar battle hide" id="enemy-health-bar"></div>
@@ -49,12 +51,17 @@
 							<div class="bar battle attack-bar hide" id="attack-bar-yellow"></div>
 							<div class="bar battle attack-bar hide" id="attack-bar-red"></div>
 							<div class="bar battle attack-bar hide" id="attack-bar-white"></div>
+							<p class="hit-power hide">Damage: <span id="boost-damage"></span> HP. POWER BOOST!!!</p>
+							<p class="hit-power hide">Damage: <span id="normal-damage"></span> HP. Great hit!</p>
+							<p class="hit-power hide">Miss!</p>
 						</div>
 					</div>
 					<div class="col-xs-10">
 						<div class="bar battle dodge-bar hide" id="dodge-bar-blue">
 							<div class="bar battle dodge-bar hide" id="dodge-bar-green"></div>
 							<div class="bar battle dodge-bar hide" id="dodge-bar-white"></div>
+							<p class="hide" id="you-lost">You lost <span id=lost-hp></span> HP. Ouch!</p>
+							<p class="hide" id="nice-dodge">Nice dodge! No damage taken</p>
 						</div>
 					</div>
 				</div>
@@ -73,7 +80,9 @@
 			<div class="col-xs-3 col-xs-offset-1">
 				<img src="img/arrows.png" alt="arrows" class="battle" id="arrows-pic">
 			</div>
-			<div class="col-xs-4" id="keep-fighting">
+			<div class="col-xs-4">
+				<p class="hide" id='try-again'>KEEP FIGHTING!</p>
+				<p class="hide" id='keep-running'>ENEMY DEAD. KEEP RUNNING!</p>
 				<p class="instructions transparent">Check the mystery boxes for useful items, but beware of what you might find!</p>
 			</div>
 			<div class="col-xs-4" id="battle-instructions">

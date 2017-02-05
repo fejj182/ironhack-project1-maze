@@ -7,11 +7,6 @@ html, body {
 	max-height: 100%;
 }
 
-span {
-	margin-left: 20px;
-	margin-right: 20px;
-}
-
 i {
 	font-size: 18px !important;
 }
@@ -88,9 +83,20 @@ h2:nth-of-type(2) {
 	text-align: center;
 }
 
-#first-col > p {
-	margin-top: 50px;
+#first-col p {
 	font-size: 30px;
+}
+
+#first-col p:first-of-type {
+	margin-top: 50px;
+}
+
+#first-col p:nth-of-type(2) {
+	margin-top: 20px;
+}
+
+#your-hp, #enemy-hp {
+	margin-left: 20px;
 }
 
 #arrow-keys, #space-bar {
@@ -244,12 +250,24 @@ h2:nth-of-type(2) {
 	font-family: "flynn" ,sans-serif;
 }
 
+#nice-dodge, .hit-power, #you-lost{
+	font-size: 30px;
+	margin-top: 50px;
+}
+
+.hit-power {
+	margin-left: 75px;
+	width: 300px;
+}
+
 #try-again {
+	margin-top: 20px;
 	font-size: 60px;
 	color: red;
 }
 
-#keep-fighting .instructions {
+footer .instructions {
+	margin-top: 20px;
 	font-size: 24px;
 }
 

@@ -218,7 +218,7 @@ var clickNumber = 1;
 Game.prototype.spaceAttack = function(){
 	function removeHitPower(){
 		setTimeout(function(){
-			$("#hit-power").remove();
+			$(".hit-power").addClass("hide");
 		},750)
 	}
 
@@ -243,19 +243,21 @@ Game.prototype.spaceAttack = function(){
 			if (whiteValue > redValue && whiteValue < redValue + 16) {
 				multiplier = 1.5;
 				$("#attack-button").css("animation","flashRed 0.5s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 250px'>Damage: " + (multiplier*player.weapon.attackPower) + " HP. POWER BOOST!!!</p>");
+				$("#boost-damage").html(multiplier*player.weapon.attackPower);
+				$(".hit-power:first-of-type").toggleClass("hide");
 				removeHitPower();
 			}
 			else if (whiteValue > yellowValue && whiteValue < yellowValue + 75){
 				multiplier = 1;
 				$("#attack-button").css("animation","flashYellow 0.5s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 250px'>Damage: " + (multiplier*player.weapon.attackPower) + " HP. Great hit!</p>");
+				$("#normal-damage").html(multiplier*player.weapon.attackPower);
+				$(".hit-power:nth-of-type(2)").toggleClass("hide");
 				removeHitPower();
 			}
 			else {
 				multiplier = 0;
 				$("#attack-button").css("animation","flashBlue 0.5s");
-				$("#attack-bar-blue").append("<p id='hit-power' style='margin-left: 75px; width: 250px'>Miss!</p>");
+				$(".hit-power:nth-of-type(3)").toggleClass("hide");
 				removeHitPower();
 			}
 			$("#attack-bar-white").css("animation","none");
@@ -307,7 +309,7 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 		//if player dies...game over sequence;
 		if (character.health <= 0 && character.name == "the Wee Man"){
 			setTimeout(function(){
-				$("#player-health-bar").append("<p style='width: 250px; font-size: 40px;'>You died.</p>");
+				$("#died").removeClass("hide");
 				$("#attack-button").css("animation","none");
 			},1500)
 		}
@@ -321,16 +323,15 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 				$("#attack-bar-white").css("top: 0"); 														//reset attack bar position
 				$("#attack-button").css("animation","flashGrey 0.5s infinite");
 				$("#dodge-button").css("animation","none");
-				$("#keep-fighting").append("<p id='keep-running'>ENEMY DEAD. KEEP RUNNING!</p>");
-
+				$("#keep-running").removeClass("hide");
 				$(".battle").toggleClass("hide"); 															//hide all battle specific elements
 				$(".dodge-bar").toggleClass("hide");
 				newGame.initializeControls();																		//reinitialise controls for wee man
 				newGame.runBattles(); 																		//restart random encounters
 			},750)
 			setTimeout(function(){
-				$("#keep-running").remove();
-			},1500)
+				$("#keep-running").addClass("hide");
+			},2000)
 
 		}
 	}
@@ -348,29 +349,30 @@ Game.prototype.spaceDodge = function(){
 	if (whiteValue > greenValue && whiteValue < greenValue + 25) {
 		multiplier = 0;
 		$("#dodge-button").css("animation","flashGreen 0.75s");
-		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 250px'>Nice dodge! No damage taken</p>");
-		$("#keep-fighting").append("<p id='try-again'>KEEP FIGHTING!</p>");
+		$("#nice-dodge").removeClass("hide");
+		$("#try-again").removeClass("hide");
 
 		setTimeout(function(){
-			$("#nice-dodge").remove();
+			$("#nice-dodge").addClass("hide");
 			$("#attack-button").css("animation","flashGrey 0.5s infinite");
 		},1000)
 		setTimeout(function(){
-			$("#try-again").remove();
-		},2000)
+			$("#try-again").addClass("hide");
+		},1500)
 
 	}
 	else {
 		$("#dodge-button").css("animation","flashBlue 0.5s");
 		multiplier = 1;
-		$("#dodge-bar-blue").append("<p id='nice-dodge' style='width: 250px'>You lost " + (goblin.weapon.attackPower) + " HP. Ouch!</p>");
-		$("#keep-fighting").append("<p id='try-again'>KEEP FIGHTING!</p>");
+		$("#lost-hp").html(goblin.weapon.attackPower);
+		$("#you-lost").removeClass("hide");
+		$("#try-again").removeClass("hide");
 		setTimeout(function(){
-			$("#nice-dodge").remove();
+			$("#you-lost").addClass("hide");
 			$("#attack-button").css("animation","flashGrey 0.5s infinite");
 		},1000)
 		setTimeout(function(){
-			$("#try-again").remove();
+			$("#try-again").addClass("hide");
 		},2000)
 	}
 
@@ -391,13 +393,13 @@ Game.prototype.runGame = function(){
 		$(document).on("keyup",function(e){
 			e.preventDefault();
 			if (e.which == 32) {
-				$("#second-col").prepend("<h1>RUN!</h1>");
+				$("#second-col h1").removeClass("hide");
 				$("#start-game").remove();
 				$(".instructions").remove();
 				newGame.initializeControls();
 				newGame.runBattles();
 				setTimeout(function(){
-					$("#second-col h1").remove();
+					$("#second-col h1").addClass("hide");
 				},1500)
 			}
 		})
