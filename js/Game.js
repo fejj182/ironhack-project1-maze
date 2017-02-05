@@ -57,12 +57,12 @@ Game.prototype.drawMaze = function() {
 Game.prototype.userInstructions = function() {
 	//instructions home screen
 	setTimeout(function(){
-		$("h2:first-of-type").toggleClass("transparent");
-		$("h2:nth-of-type(2)").toggleClass("transparent");
+		$("h2:first-of-type").addClass("transparent");
+		$("h2:nth-of-type(2)").removeClass("transparent");
 	},2000)
 	setTimeout(function(){
-		$("h2:nth-of-type(2)").toggleClass("transparent");
-		$(".instructions").toggleClass("transparent")
+		$("h2:nth-of-type(2)").addClass("transparent");
+		$(".instructions").removeClass("transparent");
 		$("#arrow, #space-bar").css("animation","none");
 	},4000)
 	setTimeout(function(){
@@ -72,21 +72,21 @@ Game.prototype.userInstructions = function() {
 	setTimeout(function(){
 		$("#0-0").css({"animation":"none"});
 		$("#arrows-pic").css({"animation":"none"});
-		$("#start-game").toggleClass("hide");
+		$("#start-game").removeClass("hide");
 		$("#start-game").css("animation","flashing 1s infinite");
 	},6000)
 
 	// message which appears if user clicks instead of using space-bar
 	$("#attack-button").on("click",function(){
-		$("#battle-instructions p:first-child").toggleClass("hide");
+		$("#battle-instructions p:first-child").removeClass("hide");
 		setTimeout(function(){
-			$("#battle-instructions p:first-child").toggleClass("hide");
+			$("#battle-instructions p:first-child").addClass("hide");
 		},2000)
 	})
 	$("#dodge-button").on("click",function(){
-		$("#battle-instructions p:nth-child(2)").toggleClass("hide");
+		$("#battle-instructions p:nth-child(2)").removeClass("hide");
 		setTimeout(function(){
-			$("#battle-instructions p:nth-child(2)").toggleClass("hide");
+			$("#battle-instructions p:nth-child(2)").addClass("hide");
 		},2000)
 	})
 }
@@ -162,10 +162,10 @@ Game.prototype.initializeControls = function playerControls(){
 		//checks if new player location is equal to the random box location and if so, triggers the effect of the box
 		if(selector == randomBoxSelector) {
 			if (randomItem == "upsideDownMap") {
-				$("#maze").toggleClass("upsideDownMap");
+				$("#maze").addClass("upsideDownMap");
 				randomBoxSelector = [];
 				setTimeout(function(){
-					$("#maze").toggleClass("upsideDownMap")
+					$("#maze").removeClass("upsideDownMap")
 				},25000)
 			}
 			else if (randomItem === "50") {
@@ -201,10 +201,10 @@ Game.prototype.runBattles = function(){
 		// var battleTime = Math.floor(((Math.random() * 1) + 1)*1000); //for testing, battles appear faster
 
 		setTimeout(function(){
-			$(document).off("keyup");									// turn off movement controls
+			$(document).off("keyup");				// turn off movement controls
 			$("#enemy-hp").html(enemy.health + "HP");
-			$(".battle").toggleClass("hide");
-			$(".dodge-bar").toggleClass("hide");
+			$(".battle").removeClass("hide");
+			$("#arrows-pic").addClass("hide");
 
 			newGame.spaceBarFunction("attack");
 
@@ -243,20 +243,20 @@ Game.prototype.spaceAttack = function(){
 				multiplier = 1.5;
 				$("#attack-button").css("animation","flashRed 0.5s");
 				$("#boost-damage").html(multiplier*player.weapon.attackPower);
-				$(".hit-power:first-of-type").toggleClass("hide");
+				$(".hit-power:first-of-type").removeClass("hide");
 				removeHitPower();
 			}
 			else if (whiteValue > yellowValue && whiteValue < yellowValue + 75){
 				multiplier = 1;
 				$("#attack-button").css("animation","flashYellow 0.5s");
 				$("#normal-damage").html(multiplier*player.weapon.attackPower);
-				$(".hit-power:nth-of-type(2)").toggleClass("hide");
+				$(".hit-power:nth-of-type(2)").removeClass("hide");
 				removeHitPower();
 			}
 			else {
 				multiplier = 0;
 				$("#attack-button").css("animation","flashBlue 0.5s");
-				$(".hit-power:nth-of-type(3)").toggleClass("hide");
+				$(".hit-power:nth-of-type(3)").removeClass("hide");
 				removeHitPower();
 			}
 			$("#attack-bar-white").css("animation","none");
@@ -266,7 +266,7 @@ Game.prototype.spaceAttack = function(){
 			// After attack run dodge functionality
 			$(document).off("keyup"); 												// have to remove attack function from space bar before reassignment
 			newGame.spaceBarFunction("defend");
-			$(".dodge-bar").toggleClass("hide");
+			$(".dodge-bar").removeClass("hide");
 			$("#dodge-bar-white").css("animation","leftRight 1.25s linear infinite");
 
 			newGame.runAttack(player,goblin,multiplier);
@@ -314,17 +314,17 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 		}
 		//sequence which takes place when enemy is killed in battle, i.e. to restart the maze aspect of the game
 		else if (character.health <= 0 && character.name != "the Wee Man"){
-			$(".dodge-bar").toggleClass("hide");
+			$(".dodge-bar").addClass("hide");												// stops dodge bar from running until game is reset
+			$("#dodge-button").css("animation","none");
 			setTimeout(function(){
 				character.health = 10;
 				$("#enemy-health-bar").css("width",character.health * 30 + "px");
 				$("#attack-bar-white").css("animation","none");
-				$("#attack-bar-white").css("top: 0");
+				$("#attack-bar-white").css("top", "0");
 				$("#attack-button").css("animation","flashGrey 0.5s infinite");
-				$("#dodge-button").css("animation","none");
 				$("#keep-running").removeClass("hide");
-				$(".battle").toggleClass("hide");
-				$(".dodge-bar").toggleClass("hide");
+				$(".battle").addClass("hide");
+				$("#arrows-pic").removeClass("hide");
 
 				newGame.initializeControls();															//reinitialise movement controls
 				newGame.runBattles(); 																		//restart random encounters
@@ -342,50 +342,43 @@ Game.prototype.spaceDodge = function(){
 	//runs only once, as the dodge bar has already been activate on the second press of the attack space bar
 	var whiteValue = Number($("#dodge-bar-white").css("left").replace(/px/g,""))+9;
 	var greenValue = Number($("#dodge-bar-green").css("left").replace(/px/g,""));
-	var multipler;
+	var multiplier;
 	$("#dodge-bar-white").css("animation","none");
 	$("#dodge-bar-white").css("left",whiteValue + "px");
+	$("#try-again").removeClass("hide");
+
+	setTimeout(function(){
+		$(".dodge-bar").addClass("hide");
+	},750)
 
 	if (whiteValue > greenValue && whiteValue < greenValue + 25) {
-		multiplier = 0;
 		$("#dodge-button").css("animation","flashGreen 0.75s");
+		multiplier = 0;
 		$("#nice-dodge").removeClass("hide");
-		$("#try-again").removeClass("hide");
-
 		setTimeout(function(){
 			$("#nice-dodge").addClass("hide");
 			$("#attack-button").css("animation","flashGrey 0.5s infinite");
 		},1000)
-		setTimeout(function(){
-			$("#try-again").addClass("hide");
-		},1500)
-
 	}
 	else {
 		$("#dodge-button").css("animation","flashBlue 0.5s");
 		multiplier = 1;
 		$("#lost-hp").html(goblin.weapon.attackPower);
 		$("#you-lost").removeClass("hide");
-		$("#try-again").removeClass("hide");
 		setTimeout(function(){
 			$("#you-lost").addClass("hide");
 			$("#attack-button").css("animation","flashGrey 0.5s infinite");
 		},1000)
-		setTimeout(function(){
-			$("#try-again").addClass("hide");
-		},2000)
 	}
+
+	setTimeout(function(){
+		$("#try-again").addClass("hide");
+	},1500)
 
 	// space-bar keyup function needs to be reset before reassignment
 	$(document).off("keyup");
 	newGame.spaceBarFunction("attack");
-
 	newGame.runAttack(goblin,player,multiplier);
-
-	setTimeout(function(){
-		$(".dodge-bar").toggleClass("hide");
-	},750)
-
 }
 
 Game.prototype.runGame = function(){
