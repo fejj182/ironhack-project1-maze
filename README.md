@@ -81,11 +81,16 @@ the game would be played.
 
 I feel like the combination of these three things means the user finds it easy to understand how the game is played.
 
+## Flaws in programming
+
+The game was originally meant to have various enemies so I started coding with the intention of making the functions work no matter which one the player was facing. However it became clear that due to time constraints the focus then changed to simply getting the code to work with the Goblin. If more enemies were added to the game then the code would need to be modified with my original intention in mind.
+
 ## Possible Next Steps
 
-Wanted to do many other things with the game but due to time constraints decided to take an MVP approach and add in features from there. Some features which could be added next are:
+As previously stated I wanted to do many other things with the game but due to time constraints I decided to take an MVP approach and add in features from there. Some features which could be added next are:
 
 * More items especially collectibles and weapons/armour
+* More enemies
 * Increase difficulty as the game progress i.e. each level make enemies more difficult or make the attack and dodge bar move quicker.
 * Theme Music
 

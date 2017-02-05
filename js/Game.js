@@ -8,7 +8,7 @@ function Game(){
 
 	this.items = {
 		weapons: weapons,
-		playerItems : [],
+		playerItems : mysteryBoxes.items,
 		collectibles : []
 	};
 
@@ -54,7 +54,8 @@ Game.prototype.drawMaze = function() {
 	}
 }
 
-Game.prototype.showInstructions = function() {
+Game.prototype.userInstructions = function() {
+	//instructions home screen
 	setTimeout(function(){
 		$("h2:first-of-type").toggleClass("transparent");
 		$("h2:nth-of-type(2)").toggleClass("transparent");
@@ -74,13 +75,26 @@ Game.prototype.showInstructions = function() {
 		$("#start-game").toggleClass("hide");
 		$("#start-game").css("animation","flashing 1s infinite");
 	},6000)
+
+	// message which appears if user clicks instead of using space-bar
+	$("#attack-button").on("click",function(){
+		$("#battle-instructions p:first-child").toggleClass("hide");
+		setTimeout(function(){
+			$("#battle-instructions p:first-child").toggleClass("hide");
+		},2000)
+	})
+	$("#dodge-button").on("click",function(){
+		$("#battle-instructions p:nth-child(2)").toggleClass("hide");
+		setTimeout(function(){
+			$("#battle-instructions p:nth-child(2)").toggleClass("hide");
+		},2000)
+	})
 }
 
-var level = 1;
-
 Game.prototype.initializeControls = function playerControls(){
-	// move function used in multiple locations within bind function below
+	var level = 1;
 
+	// move function used in multiple locations within bind function below
 	$(document).bind("keyup", function controls(e){
 		e.preventDefault();
 		var selector = player.location[0] + "-" + player.location[1];
@@ -130,7 +144,7 @@ Game.prototype.initializeControls = function playerControls(){
 				border = document.getElementById(checkSelector).style.borderBottom;
 				break;
 		}
-		// border.indexOf("2px") == -1 ? true : false;
+
 		if (border.indexOf("2px") == -1) {
 			return true;
 		}
@@ -143,10 +157,13 @@ Game.prototype.initializeControls = function playerControls(){
 		newLocationCommand;
 		//overwrite selector after move
 		selector = player.location[0] + "-" + player.location[1];
+		$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
+
+		//checks if new player location is equal to the random box location and if so, triggers the effect of the box
 		if(selector == randomBoxSelector) {
 			if (randomItem == "upsideDownMap") {
 				$("#maze").toggleClass("upsideDownMap");
-				randomBoxSelector = [0,0];
+				randomBoxSelector = [];
 				setTimeout(function(){
 					$("#maze").toggleClass("upsideDownMap")
 				},25000)
@@ -157,25 +174,7 @@ Game.prototype.initializeControls = function playerControls(){
 				$("#player-health-bar").css("width","300px");
 			}
 		}
-		$("#" + selector).html("<i class='fa fa-child' aria-hidden='true'></i>");
 	}
-
-	function uxHelp(){
-		$("#attack-button").on("click",function(){
-			$("#battle-instructions p:first-child").toggleClass("hide");
-			setTimeout(function(){
-				$("#battle-instructions p:first-child").toggleClass("hide");
-			},2000)
-		})
-		$("#dodge-button").on("click",function(){
-			$("#battle-instructions p:nth-child(2)").toggleClass("hide");
-			setTimeout(function(){
-				$("#battle-instructions p:nth-child(2)").toggleClass("hide");
-			},2000)
-		})
-	}
-
-	uxHelp();
 }
 
 Game.prototype.spaceBarFunction = function(mode) {
@@ -199,12 +198,12 @@ Game.prototype.runBattles = function(){
 	function randomBattleMode(enemy) {
 		//Starts a battle every X seconds
 		var battleTime = Math.floor(((Math.random() * 5) + 7.5)*1000);
-		// var battleTime = Math.floor(((Math.random() * 1) + 1)*1000);
+		// var battleTime = Math.floor(((Math.random() * 1) + 1)*1000); //for testing, battles appear faster
 
 		setTimeout(function(){
-			$(document).off("keyup");									// turn off controls
-			$("#enemy-hp").html(enemy.health + "HP"); // set enemy hp for specific enemy
-			$(".battle").toggleClass("hide");					//display all battle elements
+			$(document).off("keyup");									// turn off movement controls
+			$("#enemy-hp").html(enemy.health + "HP");
+			$(".battle").toggleClass("hide");
 			$(".dodge-bar").toggleClass("hide");
 
 			newGame.spaceBarFunction("attack");
@@ -265,10 +264,10 @@ Game.prototype.spaceAttack = function(){
 			$("#dodge-button").css("animation","flashGrey 0.5s infinite");
 
 			// After attack run dodge functionality
-			$(document).off("keyup"); 												// remove attack function from space bar
-			newGame.spaceBarFunction("defend"); 							//	assign defend function onto space bar
-			$(".dodge-bar").toggleClass("hide");							//	remove hide from dodge bar elements
-			$("#dodge-bar-white").css("animation","leftRight 1.25s linear infinite");	//animate moving dodge bar
+			$(document).off("keyup"); 												// have to remove attack function from space bar before reassignment
+			newGame.spaceBarFunction("defend");
+			$(".dodge-bar").toggleClass("hide");
+			$("#dodge-bar-white").css("animation","leftRight 1.25s linear infinite");
 
 			newGame.runAttack(player,goblin,multiplier);
 
@@ -303,7 +302,7 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 		if (character.health <= 0) {
 			character.health = 0;																		// health cannot go below zero
 			$("#" + character.hpId).html(character.health + "HP."); // health updated to zero
-			$(document).off("keyup");																// remove all controls
+			$(document).off("keyup");																// halt all controls
 		}
 
 		//if player dies...game over sequence;
@@ -313,20 +312,21 @@ Game.prototype.runAttack = function(attacker,receiver,multiplier) {
 				$("#attack-button").css("animation","none");
 			},1500)
 		}
-		//sequence which takes place when enemy is killed in battle, i.e. to restart the game
+		//sequence which takes place when enemy is killed in battle, i.e. to restart the maze aspect of the game
 		else if (character.health <= 0 && character.name != "the Wee Man"){
 			$(".dodge-bar").toggleClass("hide");
 			setTimeout(function(){
-				character.health = 10; 																						//reset enemy health
-				$("#enemy-health-bar").css("width",character.health * 30 + "px"); //reset enemy health bar
-				$("#attack-bar-white").css("animation","none");										//stop attack bar animation
-				$("#attack-bar-white").css("top: 0"); 														//reset attack bar position
+				character.health = 10;
+				$("#enemy-health-bar").css("width",character.health * 30 + "px");
+				$("#attack-bar-white").css("animation","none");
+				$("#attack-bar-white").css("top: 0");
 				$("#attack-button").css("animation","flashGrey 0.5s infinite");
 				$("#dodge-button").css("animation","none");
 				$("#keep-running").removeClass("hide");
-				$(".battle").toggleClass("hide"); 															//hide all battle specific elements
+				$(".battle").toggleClass("hide");
 				$(".dodge-bar").toggleClass("hide");
-				newGame.initializeControls();																		//reinitialise controls for wee man
+
+				newGame.initializeControls();															//reinitialise movement controls
 				newGame.runBattles(); 																		//restart random encounters
 			},750)
 			setTimeout(function(){
@@ -376,7 +376,7 @@ Game.prototype.spaceDodge = function(){
 		},2000)
 	}
 
-	// resets space bar to be able to start next attack
+	// space-bar keyup function needs to be reset before reassignment
 	$(document).off("keyup");
 	newGame.spaceBarFunction("attack");
 
@@ -389,6 +389,7 @@ Game.prototype.spaceDodge = function(){
 }
 
 Game.prototype.runGame = function(){
+	//runs after flashing start button appears on instructions screen, game can't be started before this
 	setTimeout(function(){
 		$(document).on("keyup",function(e){
 			e.preventDefault();
@@ -408,5 +409,5 @@ Game.prototype.runGame = function(){
 
 var newGame = new Game();
 newGame.drawMaze();
-newGame.showInstructions();
+newGame.userInstructions();
 newGame.runGame();
