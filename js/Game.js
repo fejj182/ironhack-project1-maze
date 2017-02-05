@@ -56,11 +56,11 @@ Game.prototype.drawMaze = function() {
 
 Game.prototype.showInstructions = function() {
 	setTimeout(function(){
-		$("h2:first-child").toggleClass("transparent");
-		$("h2:nth-child(2)").toggleClass("transparent");
+		$("h2:first-of-type").toggleClass("transparent");
+		$("h2:nth-of-type(2)").toggleClass("transparent");
 	},2000)
 	setTimeout(function(){
-		$("h2:nth-child(2)").toggleClass("transparent");
+		$("h2:nth-of-type(2)").toggleClass("transparent");
 		$(".instructions").toggleClass("transparent")
 		$("#arrow, #space-bar").css("animation","none");
 	},4000)
